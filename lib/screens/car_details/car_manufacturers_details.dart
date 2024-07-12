@@ -15,7 +15,13 @@ class CarManufacturersDetails extends BasePage {
 
 class _CarManufacturersDetailsState
     extends BasePageState<CarManufacturersDetails, CarManufacturersBloc> {
-  final CarManufacturersBloc _bloc = CarManufacturersBloc();
+  late CarManufacturersBloc _bloc;
+
+  @override
+  void initState() {
+    _bloc = BlocProvider.of<CarManufacturersBloc>(context);
+    super.initState();
+  }
 
   @override
   Widget buildWidget(BuildContext context) {
@@ -43,14 +49,13 @@ class _CarManufacturersDetailsState
   }
 
   @override
-  CarManufacturersBloc getBloc() =>
-      BlocProvider.of<CarManufacturersBloc>(context);
+  CarManufacturersBloc getBloc() => _bloc;
 
-  /*@override
+  @override
   void dispose() {
-    getBloc().close();
+    // _bloc.close();
     super.dispose();
-  }*/
+  }
 
   /// --------------------------------------  WIDGETS  --------------------------------------
 
