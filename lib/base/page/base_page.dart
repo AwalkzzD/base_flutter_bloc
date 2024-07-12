@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class BasePage extends StatefulWidget {
-  const BasePage({super.key, this.bloc});
-
-  final BaseBloc? bloc;
+  const BasePage({super.key});
 
   @override
   BasePageState createState() => getState();
