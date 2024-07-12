@@ -53,10 +53,12 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
       builder: (BuildContext context, state) {
         switch (state) {
           case LoadingState():
+            print('Loading State');
             return (onLoadingState == null)
                 ? const Center(child: CircularProgressIndicator())
                 : onLoadingState(state);
           case DataState():
+            print('Data State');
             return onDataState(state);
           case ErrorState():
             return (onErrorState == null)

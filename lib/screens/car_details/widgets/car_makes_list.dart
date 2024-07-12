@@ -1,7 +1,4 @@
-import 'package:base_flutter_bloc/base/component/base_bloc.dart';
-import 'package:base_flutter_bloc/base/component/base_event.dart';
-import 'package:base_flutter_bloc/base/component/base_state.dart';
-import 'package:base_flutter_bloc/base/page/base_page.dart';
+import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc_event.dart';
 import 'package:base_flutter_bloc/remote/models/car/makes/car_makes_response.dart';

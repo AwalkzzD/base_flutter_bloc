@@ -1,23 +1,22 @@
-import 'package:base_flutter_bloc/base/component/base_bloc.dart';
-import 'package:base_flutter_bloc/base/component/base_event.dart';
-import 'package:base_flutter_bloc/base/component/base_state.dart';
-import 'package:base_flutter_bloc/base/page/base_page.dart';
+import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc_event.dart';
 import 'package:base_flutter_bloc/remote/models/car/manufacturers/car_manufacturers_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CarManufacturersList extends BasePage {
-  const CarManufacturersList({super.key});
+class CarManufacturersDetails extends BasePage {
+  const CarManufacturersDetails({super.key});
 
   @override
   BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
-      _CarManufacturersListState();
+      _CarManufacturersDetailsState();
 }
 
-class _CarManufacturersListState
-    extends BasePageState<CarManufacturersList, CarManufacturersBloc> {
+class _CarManufacturersDetailsState
+    extends BasePageState<CarManufacturersDetails, CarManufacturersBloc> {
+  final CarManufacturersBloc _bloc = CarManufacturersBloc();
+
   @override
   Widget buildWidget(BuildContext context) {
     return BlocProvider<CarManufacturersBloc>.value(
@@ -35,14 +34,13 @@ class _CarManufacturersListState
     /*return Column(children: [
       Expanded(child: buildCarManufacturersList()),
       ElevatedButton(
+          // onPressed: () => getBloc().add(GetCarManufacturersEvent()),
           onPressed: () => (!getBloc().isClosed)
               ? getBloc().add(GetCarManufacturersEvent())
-              : print('List Page -> Bloc instance is closed'),
+              : print('Details Page -> Bloc instance is closed'),
           child: const Text('Get Car Manufacturers')),
     ]);*/
   }
-
-  final CarManufacturersBloc _bloc = CarManufacturersBloc();
 
   @override
   CarManufacturersBloc getBloc() =>
