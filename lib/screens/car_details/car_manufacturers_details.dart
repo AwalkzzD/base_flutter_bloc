@@ -17,17 +17,6 @@ class _CarManufacturersDetailsState
     extends BasePageState<CarManufacturersDetails, CarManufacturersBloc> {
   late CarManufacturersBloc _bloc;
 
-  int _selectedDotIndex = 0;
-
-  void _rotateRegulator() {
-    setState(() {
-      _selectedDotIndex++;
-      if (_selectedDotIndex > 4) {
-        _selectedDotIndex = 0;
-      }
-    });
-  }
-
   @override
   void initState() {
     _bloc = BlocProvider.of<CarManufacturersBloc>(context);
