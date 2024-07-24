@@ -1,35 +1,35 @@
-import 'package:base_flutter_bloc/base/network/response/base_response.dart';
-import 'package:base_flutter_bloc/remote/api_manager/api_manager.dart';
-import 'package:base_flutter_bloc/remote/api_manager/utils/app_endpoints.dart';
-import 'package:base_flutter_bloc/remote/models/car/makes/car_makes_response.dart'
-    as car_makes;
-import 'package:base_flutter_bloc/remote/models/car/manufacturers/car_manufacturers_response.dart'
-    as car_manufacturers;
+import 'package:base_flutter_bloc/base/network/repository/remote_repository.dart';
+import 'package:base_flutter_bloc/base/network/response/error/error_response.dart';
+import 'package:base_flutter_bloc/base/network/response/success/success_response.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/request/get_car_makes_request.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/request/get_car_manufacturers_request.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/response/car_makes_response.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/response/car_manufacturers_response.dart';
 
-Future<void> apiGetCarManufacturers(
-    Function(List<car_manufacturers.Result>?) onSuccess,
-    Function(String) onError) async {
-  try {
-    BaseResponse response = await getNetworkResource(
-        endPoint: AppEndpoints.getCarManufacturers,
-        queryParams: {"format": "json"});
-    final carManufacturers =
-        car_manufacturers.carManufacturersResponseFromJson(response.data);
-    onSuccess(carManufacturers.results);
-  } catch (ex) {
-    onError(ex.toString());
+class CarDetailsRepository extends RemoteRepository {
+  CarDetailsRepository(super.remoteDataSource);
+
+  Future<void> apiGetCarMakes(
+      Function(SuccessResponse<CarMakesResponse>) onSuccess,
+      Function(ErrorResponse) onError) async {
+    final response =
+        await dataSource.getData<CarMakesResponse>(GetCarMakesRequest());
+    response.fold((error) {
+      onError(error);
+    }, (success) {
+      onSuccess(success);
+    });
   }
-}
 
-Future<void> apiGetCarMakes(Function(List<car_makes.Result>?) onSuccess,
-    Function(String) onError) async {
-  try {
-    BaseResponse response = await getNetworkResource(
-        endPoint: AppEndpoints.getCarMakes, queryParams: {"format": "json"});
-
-    final carMakes = car_makes.carMakesResponseFromJson(response.data);
-    onSuccess(carMakes.results);
-  } catch (ex) {
-    onError(ex.toString());
+  Future<void> apiGetCarManufacturers(
+      Function(SuccessResponse<CarManufacturersResponse>) onSuccess,
+      Function(ErrorResponse) onError) async {
+    final response = await dataSource
+        .getData<CarManufacturersResponse>(GetCarManufacturersRequest());
+    response.fold((error) {
+      onError(error);
+    }, (success) {
+      onSuccess(success);
+    });
   }
 }

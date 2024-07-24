@@ -4,7 +4,7 @@ import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc_event.dart';
-import 'package:base_flutter_bloc/remote/models/car/manufacturers/car_manufacturers_response.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/response/car_manufacturers_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,12 +12,11 @@ class CarManufacturersList extends BasePage {
   const CarManufacturersList({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BaseBloc<BaseEvent, BaseState>> getState() =>
       _CarManufacturersListState();
 }
 
-class _CarManufacturersListState
-    extends BasePageState<CarManufacturersList, CarManufacturersBloc> {
+class _CarManufacturersListState extends BasePageState<CarManufacturersBloc> {
   late CarManufacturersBloc _bloc;
 
   @override

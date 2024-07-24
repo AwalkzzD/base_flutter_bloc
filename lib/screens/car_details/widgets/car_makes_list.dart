@@ -1,18 +1,18 @@
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc_event.dart';
-import 'package:base_flutter_bloc/remote/models/car/makes/car_makes_response.dart';
+import 'package:base_flutter_bloc/remote/repository/car_details/response/car_makes_response.dart';
 import 'package:flutter/material.dart';
 
 class CarMakesList extends BasePage {
   const CarMakesList({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BaseBloc<BaseEvent, BaseState>> getState() =>
       _CarMakesListState();
 }
 
-class _CarMakesListState extends BasePageState<CarMakesList, CarMakesBloc> {
+class _CarMakesListState extends BasePageState<CarMakesBloc> {
   final CarMakesBloc _bloc = CarMakesBloc();
 
   @override

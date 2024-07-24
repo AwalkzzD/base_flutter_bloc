@@ -12,14 +12,39 @@ abstract class BasePage extends StatefulWidget {
   BasePageState getState();
 }
 
-abstract class BasePageState<T extends BasePage, B extends BaseBloc>
-    extends State<T> {
+abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
+    with WidgetsBindingObserver {
+  final bool _isPaused = false;
+
   B getBloc();
 
   @override
   void initState() {
     super.initState();
     getBloc();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      onReady();
+    });
+  }
+
+  void onResume() {}
+
+  void onReady() {}
+
+  void onPause() {}
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.paused) {
+      if (!_isPaused) {
+        onPause();
+      }
+    } else if (state == AppLifecycleState.resumed) {
+      if (!_isPaused) {
+        onResume();
+      }
+    }
   }
 
   @override
@@ -53,12 +78,10 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
       builder: (BuildContext context, state) {
         switch (state) {
           case LoadingState():
-            print('Loading State');
             return (onLoadingState == null)
                 ? const Center(child: CircularProgressIndicator())
                 : onLoadingState(state);
           case DataState():
-            print('Data State');
             return onDataState(state);
           case ErrorState():
             return (onErrorState == null)
@@ -73,6 +96,32 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
             return const SizedBox(
               child: Center(child: Text('Unexpected Data State')),
             );
+        }
+      },
+    );
+  }
+
+  getBlocListener({
+    required Widget child,
+    Function(BaseState state)? onLoadingState,
+    required Function(BaseState state) onDataState,
+    Function(BaseState state)? onErrorState,
+  }) {
+    return BlocListener<B, BaseState>(
+      child: child,
+      listener: (BuildContext context, state) {
+        switch (state) {
+          case LoadingState():
+            (onLoadingState == null)
+                ? print('Loading Data')
+                : onLoadingState(state);
+          case DataState():
+            onDataState(state);
+          case ErrorState():
+            (onErrorState == null)
+                ? print('Error fetching Data')
+                : onErrorState(state);
+          default:
         }
       },
     );
