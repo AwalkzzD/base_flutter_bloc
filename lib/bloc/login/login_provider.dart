@@ -6,5 +6,6 @@ class LoginProvider {
 
   static LoginRepository? _repository;
 
-  static get loginRepository => _repository ??= LoginRepository(BaseClient());
+  static LoginRepository get loginRepository =>
+      _repository ??= LoginRepository(BaseClient());
 }

@@ -10,6 +10,10 @@ abstract class BaseState<T> extends Equatable {
   List<Object?> get props => [];
 }
 
+class InitialState extends BaseState {
+  const InitialState() : super(data: null, errorMessage: null);
+}
+
 class LoadingState extends BaseState {
   const LoadingState() : super(data: null, errorMessage: null);
 }

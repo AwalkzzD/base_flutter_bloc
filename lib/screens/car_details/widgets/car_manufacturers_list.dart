@@ -61,8 +61,8 @@ class _CarManufacturersListState extends BasePageState<CarManufacturersBloc> {
   /// --------------------------------------  WIDGETS  --------------------------------------
 
   Widget buildCarManufacturersList() {
-    return getBlocBuilder(
-      onDataState: (state) {
+    return getBlocConsumer(
+      onDataReturn: (state) {
         return ListView.separated(
             itemBuilder: (context, index) {
               return Container(
@@ -82,6 +82,7 @@ class _CarManufacturersListState extends BasePageState<CarManufacturersBloc> {
             separatorBuilder: (context, index) => const SizedBox(height: 3),
             itemCount: ((state.data) as List<Result>).length);
       },
+      onDataPerform: (state) {},
     );
   }
 }

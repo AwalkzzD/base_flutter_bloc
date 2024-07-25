@@ -1,11 +1,12 @@
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc.dart';
-import 'package:base_flutter_bloc/bloc/login/login_bloc.dart';
 import 'package:base_flutter_bloc/env/environment.dart';
 import 'package:base_flutter_bloc/screens/login/login_screen.dart';
+import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,6 @@ Future<void> main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider(create: (BuildContext context) => LoginBloc()),
       BlocProvider(create: (BuildContext context) => CarManufacturersBloc()),
       BlocProvider(create: (BuildContext context) => CarMakesBloc()),
     ],
@@ -35,16 +35,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(providers: [
-        BlocProvider(create: (BuildContext context) => CarManufacturersBloc()),
-        BlocProvider(create: (BuildContext context) => CarMakesBloc()),
-      ], child: const CarDetailsHomeScreen()),
-    );*/
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+    return GlobalLoaderOverlay(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const LoginScreen(),
+        navigatorKey: globalNavigatorKey,
+      ),
     );
   }
 }

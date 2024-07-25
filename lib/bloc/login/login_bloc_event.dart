@@ -17,3 +17,5 @@ class DoLoginEvent extends LoginBlocEvent {
 
   DoLoginEvent(this.cookieManager);
 }
+
+class InitUserLoginEvent extends LoginBlocEvent {}

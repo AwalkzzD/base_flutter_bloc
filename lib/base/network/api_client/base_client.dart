@@ -34,7 +34,7 @@ class BaseClient extends BaseDataSource<BaseRequest> {
   }
 
   @override
-  Future<Either<ErrorResponse, SuccessResponse<T>>> getData<T>(
+  Future<Either<ErrorResponse, SuccessResponse<T>>> makeRequest<T>(
     BaseRequest request, {
     bool? enableCaching = false,
     bool? forceRefresh,

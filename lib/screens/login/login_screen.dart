@@ -39,25 +39,27 @@ class _LoginScreenState extends BasePageState<LoginBloc> {
 
   @override
   Widget buildWidget(BuildContext context) {
-    return getBlocListener(onDataState: (state) {
-      if (state.data is OAuthToken) {
-        getBloc().add(DoLoginEvent(cookieManager));
-      } else if (state.data is Cookie) {
-        navigateToNextScreen();
-      }
-    }, child: getBlocBuilder(
-      onDataState: (state) {
-        if (state.data is AuthorizationResult) {
-          webViewController
-              .loadRequest((state.data as AuthorizationResult).authorizeUri);
-          return WebViewWidget(
-            controller: webViewController,
-          );
-        } else {
-          return const SizedBox();
+    return getBlocConsumer(
+      onDataReturn: (state) {
+        switch (state.data) {
+          case AuthorizationResult authorizationResult:
+            return WebViewWidget(controller: webViewController);
+          default:
+            return const SizedBox();
         }
       },
-    ));
+      onDataPerform: (state) {
+        switch (state.data) {
+          case AuthorizationResult authorizationResult:
+            webViewController.loadRequest((authorizationResult).authorizeUri);
+          case OAuthToken oAuthToken:
+            getBloc().add(InitUserLoginEvent());
+          // getBloc().add(DoLoginEvent(cookieManager));
+          case Cookie cookie:
+            navigateToNextScreen();
+        }
+      },
+    );
   }
 
   @override
@@ -75,8 +77,12 @@ class _LoginScreenState extends BasePageState<LoginBloc> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {},
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageStarted: (String url) {
+            showLoader();
+          },
+          onPageFinished: (String url) {
+            hideLoader();
+          },
           onHttpError: (HttpResponseError error) async {
             Uri? uri = error.request?.uri;
             if (uri != null) {

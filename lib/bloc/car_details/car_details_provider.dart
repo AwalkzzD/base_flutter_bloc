@@ -14,6 +14,6 @@ class CarDetailsProvider {
         interceptors: [LogInterceptor(responseBody: true, requestBody: true)],
       );
 
-  static get carDetailsRepository =>
+  static CarDetailsRepository get carDetailsRepository =>
       _repository ??= CarDetailsRepository(baseClient);
 }

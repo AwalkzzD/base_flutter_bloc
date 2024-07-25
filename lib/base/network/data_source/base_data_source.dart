@@ -1,3 +1,3 @@
 abstract class BaseDataSource<K> {
-  Future getData<T>(K request);
+  Future makeRequest<T>(K request);
 }

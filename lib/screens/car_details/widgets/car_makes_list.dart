@@ -20,7 +20,10 @@ class _CarMakesListState extends BasePageState<CarMakesBloc> {
     return Column(children: [
       Expanded(child: buildCarMakesList()),
       ElevatedButton(
-          onPressed: () => getBloc().add(GetCarMakesEvent()),
+          onPressed: () {
+            showCustomLoader();
+            getBloc().add(GetCarMakesEvent());
+          },
           child: const Text('Get Car Makes')),
     ]);
   }
@@ -31,29 +34,36 @@ class _CarMakesListState extends BasePageState<CarMakesBloc> {
   /// --------------------------------------  WIDGETS  --------------------------------------
 
   Widget buildCarMakesList() {
-    return getBlocBuilder(
-      onDataState: (state) {
-        return ListView.separated(
-            itemBuilder: (context, index) {
-              return Container(
-                color: Colors.black12,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                          '${((state.data) as List<Result>)[index].makeName}'),
+    return Column(
+      children: [
+        const Text('Dummy Text', textAlign: TextAlign.center),
+        Expanded(
+          child: getBlocConsumer(onDataReturn: (state) {
+            return ListView.separated(
+                itemBuilder: (context, index) {
+                  return Container(
+                    color: Colors.black12,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                              '${((state.data) as List<Result>)[index].makeName}'),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) => const SizedBox(
-                  height: 3,
-                ),
-            itemCount: ((state.data) as List<Result>).length);
-      },
+                  );
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                      height: 3,
+                    ),
+                itemCount: ((state.data) as List<Result>).length);
+          }, onDataPerform: (state) {
+            hideLoader();
+          }),
+        ),
+      ],
     );
   }
 }
