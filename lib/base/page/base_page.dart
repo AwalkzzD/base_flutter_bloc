@@ -139,64 +139,6 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
         });
   }
 
-  /*getBlocBuilder({
-    Function(BaseState state)? onLoadingState,
-    required Function(BaseState state) onDataState,
-    Function(BaseState state)? onErrorState,
-  }) {
-    return BlocBuilder<B, BaseState>(
-      builder: (BuildContext context, state) {
-        switch (state) {
-          case LoadingState():
-            return (onLoadingState == null)
-                ? const Center(child: CircularProgressIndicator())
-                : onLoadingState(state);
-          case DataState():
-            return onDataState(state);
-          case ErrorState():
-            return (onErrorState == null)
-                ? Center(
-                    child: SizedBox(
-                      child:
-                          Text(state.errorMessage ?? 'Something went wrong!'),
-                    ),
-                  )
-                : onErrorState(state);
-          default:
-            return const SizedBox(
-              child: Center(child: Text('Unexpected Data State')),
-            );
-        }
-      },
-    );
-  }
-
-  getBlocListener({
-    required Widget child,
-    Function(BaseState state)? onLoadingState,
-    required Function(BaseState state) onDataState,
-    Function(BaseState state)? onErrorState,
-  }) {
-    return BlocListener<B, BaseState>(
-      child: child,
-      listener: (BuildContext context, state) {
-        switch (state) {
-          case LoadingState():
-            (onLoadingState == null)
-                ? print('Loading Data')
-                : onLoadingState(state);
-          case DataState():
-            onDataState(state);
-          case ErrorState():
-            (onErrorState == null)
-                ? print('Error fetching Data')
-                : onErrorState(state);
-          default:
-        }
-      },
-    );
-  }*/
-
   showLoader() {
     context.loaderOverlay.show();
   }

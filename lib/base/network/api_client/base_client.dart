@@ -1,9 +1,12 @@
+import 'package:base_flutter_bloc/base/network/api_client/dio_manager.dart';
 import 'package:base_flutter_bloc/base/network/data_source/base_data_source.dart';
 import 'package:base_flutter_bloc/base/network/request/base_request.dart';
 import 'package:base_flutter_bloc/base/network/response/error/error_response.dart';
 import 'package:base_flutter_bloc/base/network/response/success/success_response.dart';
+import 'package:base_flutter_bloc/env/environment.dart';
 import 'package:base_flutter_bloc/remote/utils/api_constants.dart';
-import 'package:base_flutter_bloc/remote/utils/dio_manager.dart';
+import 'package:base_flutter_bloc/remote/utils/dio_http_formatter.dart';
+import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -30,7 +33,7 @@ class BaseClient extends BaseDataSource<BaseRequest> {
                   Duration(milliseconds: ApiConstants.receiveTimeout),
               sendTimeout: Duration(milliseconds: ApiConstants.writeTimeout),
             ),
-        interceptors: interceptors);
+        interceptors: interceptors ?? [HttpFormatter()]);
   }
 
   @override
@@ -42,6 +45,7 @@ class BaseClient extends BaseDataSource<BaseRequest> {
   }) async {
     try {
       Options options = Options(
+        contentType: "application/json",
         headers: request.header,
         method: request.httpMethod.name,
         receiveDataWhenStatusError: true,
@@ -63,15 +67,22 @@ class BaseClient extends BaseDataSource<BaseRequest> {
       final decoder = request.decoder;
 
       if (decoder != null) {
+        /// with decoder
         final data = decoder(dioResponse.data);
-        return Right(SuccessResponse<T>(dioResponse.statusCode, data));
+        return Right(SuccessResponse<T>(dioResponse.statusCode,
+            data: data, rawResponse: dioResponse));
       } else {
-        return Right(SuccessResponse(dioResponse.statusCode, dioResponse.data));
+        /// without decoder
+        final data = dioResponse.data;
+        return Right(SuccessResponse(dioResponse.statusCode,
+            data: data, rawResponse: dioResponse));
       }
     } on DioException catch (ex) {
+      print('Dio Exception --> ${ex.message}');
       return Left(ErrorResponse(
           ex.response?.statusCode ?? -1, ex.message ?? 'Something went wrong'));
     } on Exception catch (ex) {
+      print('Exception --> ${ex.toString()}');
       return Left(ErrorResponse(-1, ex.toString()));
     }
   }
@@ -80,7 +91,18 @@ class BaseClient extends BaseDataSource<BaseRequest> {
     BaseOptions? baseOptions,
     List<Interceptor>? interceptors,
   }) {
+    final oauth = Environment().config?.oauth;
+
     _dioClient = DioManager.getInstance(
         baseOptions: baseOptions, interceptors: interceptors)!;
+
+    if (oauth != null) {
+      _dioClient.interceptors
+          .add(AuthBearerInterceptor(oauth, onInvalid: onAuthError));
+    }
+  }
+
+  Future<void> onAuthError(Exception error) {
+    return Future.value();
   }
 }

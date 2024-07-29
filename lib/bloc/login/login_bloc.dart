@@ -3,11 +3,22 @@ import 'dart:io';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc_event.dart';
 import 'package:base_flutter_bloc/bloc/login/login_provider.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/app_settings_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/company_id_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
 import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
+import 'package:base_flutter_bloc/utils/auth/user_common_api.dart';
+import 'package:base_flutter_bloc/utils/enum_to_string/enum_to_string.dart';
+import 'package:base_flutter_bloc/utils/stream_helper/settings_utils.dart';
+import 'package:collection/collection.dart';
 
 class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
   AuthorizationResult? authorizationResult;
+  String? companyId;
+  String? activePeriod;
 
   LoginBloc() {
     on<LoginBlocEvent>(
@@ -45,9 +56,67 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState((error).errorMsg));
             });
 
-          /// DoLoginEvent
-          case InitUserLoginEvent initUserLoginEvent:
+          /// GetCompanyIdEvent
+          case GetCompanyIdEvent getCompanyIdEvent:
             emit(const LoadingState());
+            await getCompanyId(((response) {
+              companyId = response?.id;
+              emit(DataState<CompanyIdResponse?>(response));
+            }), (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// GetActivePeriodEvent
+          case GetActivePeriodEvent getActivePeriodEvent:
+            emit(const LoadingState());
+            await getActivePeriod(getActivePeriodEvent.companyId, ((response) {
+              AppSettingsResponse? activePeriodCode = response.firstWhereOrNull(
+                  (element) =>
+                      element.setting ==
+                      EnumToString.convertToString(SettingsValue.ActivePeriod));
+              if (activePeriodCode != null) {
+                activePeriod = activePeriodCode.value.toString();
+              } else {
+                emit(const ErrorState('User Active Period not found.'));
+              }
+              emit(DataState<List<AppSettingsResponse>>(response));
+            }), (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// GetAcademicPeriodsEvent
+          case GetAcademicPeriodsEvent getAcademicPeriodsEvent:
+            emit(const LoadingState());
+            await getUserAcademicPeriods(getAcademicPeriodsEvent.companyId,
+                getAcademicPeriodsEvent.activePeriod, (response) {
+              emit(DataState<List<AcademicPeriodResponse>>(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          case GetCompanyEvent getCompanyEvent:
+            emit(const LoadingState());
+            await getCompany(getCompanyEvent.instituteCode, (response) {
+              emit(DataState<InstituteResponse>(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          case GetMobileLicenseMenuEvent getMobileLicenseMenuEvent:
+            emit(const LoadingState());
+            await getMobileLicenseUserMenus((response) {
+              emit(DataState<MobileLicenseMenuResponse>(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          case GetTerminologiesEvent getTerminologiesEvent:
+            emit(const LoadingState());
+            await getTerminologies((response) {
+              emit(DataState(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
         }
       },
     );

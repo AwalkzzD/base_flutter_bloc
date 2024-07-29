@@ -3,10 +3,19 @@ import 'dart:io';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc_event.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/app_settings_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/company_id_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
+import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
 import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/screens/car_details/car_details_home_screen.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
+import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
+import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
+import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
@@ -48,15 +57,43 @@ class _LoginScreenState extends BasePageState<LoginBloc> {
             return const SizedBox();
         }
       },
-      onDataPerform: (state) {
+      onDataPerform: (state) async {
         switch (state.data) {
           case AuthorizationResult authorizationResult:
             webViewController.loadRequest((authorizationResult).authorizeUri);
           case OAuthToken oAuthToken:
-            getBloc().add(InitUserLoginEvent());
-          // getBloc().add(DoLoginEvent(cookieManager));
+            getBloc().add(GetCompanyIdEvent());
           case Cookie cookie:
             navigateToNextScreen();
+          case CompanyIdResponse companyIdResponse:
+            getBloc().add(GetActivePeriodEvent(getBloc().companyId ?? ''));
+          case List<AppSettingsResponse> appSettingsResponse:
+            getBloc().add(GetAcademicPeriodsEvent(
+                getBloc().companyId ?? '', getBloc().activePeriod ?? ''));
+            showToast('Get Active Period was successful');
+          case List<AcademicPeriodResponse> academicPeriodsResponse:
+            if (academicPeriodsResponse.isEmpty) {
+              // reLogin();
+            } else {
+              showToast('Get Academic Periods was successful');
+              RequestProperties requestProperties = RequestProperties();
+              await requestProperties.initializeValues(
+                  getBloc().companyId.toString(),
+                  getBloc().activePeriod.toString());
+              saveRequestProperties(requestProperties);
+              getBloc().add(
+                  GetCompanyEvent(getRequestProperties()?.instituteCode ?? ''));
+            }
+          case InstituteResponse instituteResponse:
+            getBloc().add(GetMobileLicenseMenuEvent());
+            showToast('Get Company Event was successful');
+
+          case MobileLicenseMenuResponse mobileLicenseMenuResponse:
+            getBloc().add(GetTerminologiesEvent());
+            showToast('Get Mobile License Menu Event was successful');
+
+          case List<TerminologyListResponse> terminologyResponse:
+            showToast('Get Terminology Event was successful');
         }
       },
     );

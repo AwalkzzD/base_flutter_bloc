@@ -1,3 +1,8 @@
+import 'dart:convert';
+
+import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 
 const String keyScaleFactor = "scaleFactor";
@@ -127,4 +132,48 @@ void saveLanguage(String? code) {
 
 String getLanguage() {
   return SpUtil.getString(keyLangCode, defValue: "en-GB");
+}
+
+/// Request Properties
+void saveRequestProperties(RequestProperties? requestProperties) {
+  SpUtil.putString(
+      keyRequestProperties, json.encode(requestProperties?.toJson()));
+}
+
+RequestProperties? getRequestProperties() {
+  RequestProperties? requestProperties =
+      SpUtil.getObj(keyRequestProperties, (v) => RequestProperties.fromJson(v));
+  return requestProperties;
+}
+
+/// academic period List
+void saveAcademicPeriodList(List<AcademicPeriodResponse> menuList) {
+  SpUtil.putObjectList(keyAcademicPeriodList, menuList);
+}
+
+List<AcademicPeriodResponse> getAcademicPeriodList() {
+  return SpUtil.getObjList(
+      keyAcademicPeriodList, (v) => AcademicPeriodResponse.fromJson(v!));
+}
+
+/// academic period
+void saveAcademicPeriod(AcademicPeriodResponse academicPeriodResponse) {
+  SpUtil.putObject(keyAcademicPeriod, academicPeriodResponse);
+}
+
+AcademicPeriodResponse? getAcademicPeriod() {
+  AcademicPeriodResponse? userResponse = SpUtil.getObj(
+      keyAcademicPeriod, (v) => AcademicPeriodResponse.fromJson(v));
+  return userResponse;
+}
+
+/// Institute
+void saveInstitute(InstituteResponse user) {
+  SpUtil.putObject(keyInstitute, user);
+}
+
+InstituteResponse? getInstitute() {
+  InstituteResponse? userResponse =
+      SpUtil.getObj(keyInstitute, (v) => InstituteResponse.fromJson(v));
+  return userResponse;
 }

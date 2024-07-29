@@ -18,7 +18,7 @@ class LoginRepository extends RemoteRepository {
     final response = await createAuthorizationRequest();
 
     if (response.authorizeUri.path.isNotEmpty) {
-      onSuccess(SuccessResponse(200, response));
+      onSuccess(SuccessResponse(200, data: response));
     } else {
       onError(ErrorResponse(-1, 'Authorize uri path empty'));
     }
@@ -37,7 +37,7 @@ class LoginRepository extends RemoteRepository {
     print('OAuthToken --> $response');
 
     if (response != null) {
-      onSuccess(SuccessResponse(200, response));
+      onSuccess(SuccessResponse(200, data: response));
     } else {
       onError(ErrorResponse(-1, 'OAuthToken is null'));
     }
@@ -57,7 +57,7 @@ class LoginRepository extends RemoteRepository {
     print('Printing Cookie --> ${cookie?.name}');
 
     if (cookie != null) {
-      onSuccess(SuccessResponse(200, cookie));
+      onSuccess(SuccessResponse(200, data: cookie));
     } else {
       onError(ErrorResponse(-1, 'Cannot get login cookies'));
     }

@@ -18,4 +18,27 @@ class DoLoginEvent extends LoginBlocEvent {
   DoLoginEvent(this.cookieManager);
 }
 
-class InitUserLoginEvent extends LoginBlocEvent {}
+class GetCompanyIdEvent extends LoginBlocEvent {}
+
+class GetActivePeriodEvent extends LoginBlocEvent {
+  final String companyId;
+
+  GetActivePeriodEvent(this.companyId);
+}
+
+class GetAcademicPeriodsEvent extends LoginBlocEvent {
+  final String companyId;
+  final String activePeriod;
+
+  GetAcademicPeriodsEvent(this.companyId, this.activePeriod);
+}
+
+class GetCompanyEvent extends LoginBlocEvent {
+  final String instituteCode;
+
+  GetCompanyEvent(this.instituteCode);
+}
+
+class GetMobileLicenseMenuEvent extends LoginBlocEvent {}
+
+class GetTerminologiesEvent extends LoginBlocEvent {}
