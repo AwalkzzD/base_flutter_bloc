@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 
@@ -175,5 +176,16 @@ void saveInstitute(InstituteResponse user) {
 InstituteResponse? getInstitute() {
   InstituteResponse? userResponse =
       SpUtil.getObj(keyInstitute, (v) => InstituteResponse.fromJson(v));
+  return userResponse;
+}
+
+/// User
+void saveUser(UserResponse user) {
+  SpUtil.putObject(keyUser, user);
+}
+
+UserResponse? getUser() {
+  UserResponse? userResponse =
+      SpUtil.getObj(keyUser, (v) => UserResponse.fromJson(v));
   return userResponse;
 }

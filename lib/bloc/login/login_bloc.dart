@@ -8,6 +8,7 @@ import 'package:base_flutter_bloc/remote/repository/settings/response/company_id
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
 import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
 import 'package:base_flutter_bloc/utils/auth/user_common_api.dart';
@@ -19,6 +20,7 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
   AuthorizationResult? authorizationResult;
   String? companyId;
   String? activePeriod;
+  List<StudentOfRelativeResponse>? studentList;
 
   LoginBloc() {
     on<LoginBlocEvent>(
@@ -94,6 +96,7 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState(error.errorMsg));
             });
 
+          /// GetCompanyEvent
           case GetCompanyEvent getCompanyEvent:
             emit(const LoadingState());
             await getCompany(getCompanyEvent.instituteCode, (response) {
@@ -102,6 +105,7 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState(error.errorMsg));
             });
 
+          /// GetMobileLicenseMenuEvent
           case GetMobileLicenseMenuEvent getMobileLicenseMenuEvent:
             emit(const LoadingState());
             await getMobileLicenseUserMenus((response) {
@@ -110,9 +114,48 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState(error.errorMsg));
             });
 
+          /// GetTerminologiesEvent
           case GetTerminologiesEvent getTerminologiesEvent:
             emit(const LoadingState());
             await getTerminologies((response) {
+              emit(DataState(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// GetUserDataEvent
+          case GetUserDataEvent getUserDataEvent:
+            emit(const LoadingState());
+            await getUserData((response) {
+              emit(DataState(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// LoadCheckUserTypeEvent
+          case LoadCheckUserTypeEvent loadCheckUserTypeEvent:
+            emit(const LoadingState());
+            await loadCheckUserType((response) {
+              emit(DataState(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// CheckMobileLicenseEvent
+          case CheckMobileLicenseEvent checkMobileLicenseEvent:
+            emit(const LoadingState());
+            await loadCheckMobileLicense((response) {
+              emit(DataState(response));
+            }, (error) {
+              emit(ErrorState(error.errorMsg));
+            });
+
+          /// GetStudentRelativeEvent
+          case GetStudentRelativeEvent getStudentRelativeEvent:
+            emit(const LoadingState());
+            await loadGetStudentRelative(getStudentRelativeEvent.entityId,
+                (response) {
+              studentList = response;
               emit(DataState(response));
             }, (error) {
               emit(ErrorState(error.errorMsg));

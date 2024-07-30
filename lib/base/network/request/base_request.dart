@@ -31,7 +31,7 @@ abstract class BaseRequest {
 
   BaseRequest({
     required this.endPoint,
-    required this.httpMethod,
+    this.httpMethod = HttpMethod.GET,
     this.token,
     this.decoder,
     this.body,

@@ -4,16 +4,21 @@ import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc_event.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/app_settings_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/check_mobile_license_response.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/company_id_response.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
 import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/check_user_type_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/screens/car_details/car_details_home_screen.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
 import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
+import 'package:base_flutter_bloc/utils/auth/user_claim_helper.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +98,33 @@ class _LoginScreenState extends BasePageState<LoginBloc> {
             showToast('Get Mobile License Menu Event was successful');
 
           case List<TerminologyListResponse> terminologyResponse:
+            getBloc().add(GetUserDataEvent());
             showToast('Get Terminology Event was successful');
+
+          case UserResponse userResponse:
+            getBloc().add(LoadCheckUserTypeEvent());
+            showToast('Get User Data Event was successful');
+
+          case CheckUserTypeResponse checkUserTypeResponse:
+            getBloc().add(CheckMobileLicenseEvent());
+            showToast('Load Check User Type Event was successful');
+
+          case CheckMobileLicenseResponse checkMobileLicenseResponse:
+            RequestProperties? requestProperties = getRequestProperties();
+            if (requestProperties?.userType == UserTypes.Parent) {
+              getBloc()
+                  .add(GetStudentRelativeEvent(requestProperties?.entityId));
+            } else {}
+            showToast('Load Check Mobile License Event was successful');
+
+          case List<StudentOfRelativeResponse> studentOfRelativeResponse:
+            if (getBloc().studentList != null) {
+              if (0 > getBloc().studentList!.length - 1) {
+              } else {}
+            }
+            getBloc()
+                .add(GetAllRelativeWithProgramsEvent(getBloc().studentList));
+            showToast('Get Student Relative Event was successful');
         }
       },
     );

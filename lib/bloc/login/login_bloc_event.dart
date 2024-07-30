@@ -1,4 +1,5 @@
 import 'package:base_flutter_bloc/base/src_bloc.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 abstract class LoginBlocEvent extends BaseEvent {}
@@ -42,3 +43,21 @@ class GetCompanyEvent extends LoginBlocEvent {
 class GetMobileLicenseMenuEvent extends LoginBlocEvent {}
 
 class GetTerminologiesEvent extends LoginBlocEvent {}
+
+class GetUserDataEvent extends LoginBlocEvent {}
+
+class LoadCheckUserTypeEvent extends LoginBlocEvent {}
+
+class CheckMobileLicenseEvent extends LoginBlocEvent {}
+
+class GetStudentRelativeEvent extends LoginBlocEvent {
+  final int? entityId;
+
+  GetStudentRelativeEvent(this.entityId);
+}
+
+class GetAllRelativeWithProgramsEvent extends LoginBlocEvent {
+  final List<StudentOfRelativeResponse>? studentList;
+
+  GetAllRelativeWithProgramsEvent(this.studentList);
+}

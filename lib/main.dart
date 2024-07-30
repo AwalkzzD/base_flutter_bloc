@@ -1,7 +1,7 @@
 import 'package:base_flutter_bloc/bloc/car_details/makes/car_makes_bloc.dart';
 import 'package:base_flutter_bloc/bloc/car_details/manufacturers/car_manufacturers_bloc.dart';
 import 'package:base_flutter_bloc/env/environment.dart';
-import 'package:base_flutter_bloc/screens/login/login_screen.dart';
+import 'package:base_flutter_bloc/screens/car_details/car_details_home_screen.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
     return GlobalLoaderOverlay(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: const LoginScreen(),
+        home: const CarDetailsHomeScreen(),
         navigatorKey: globalNavigatorKey,
       ),
     );

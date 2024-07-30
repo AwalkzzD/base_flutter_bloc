@@ -4,11 +4,17 @@ import 'package:base_flutter_bloc/base/network/response/error/error_response.dar
 import 'package:base_flutter_bloc/bloc/settings/settings_provider.dart';
 import 'package:base_flutter_bloc/bloc/user/user_provider.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/app_settings_response.dart';
+import 'package:base_flutter_bloc/remote/repository/settings/response/check_mobile_license_response.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/company_id_response.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
 import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/check_user_type_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
+import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
+import 'package:base_flutter_bloc/utils/auth/user_claim_helper.dart';
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:base_flutter_bloc/utils/guid/flutter_guid.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/settings_utils.dart';
@@ -104,6 +110,56 @@ Future<void> getMobileLicenseUserMenus(
 Future<void> getTerminologies(Function(List<TerminologyListResponse>) onSuccess,
     Function(ErrorResponse) onError) async {
   await SettingsProvider.settingsRepository.apiGetTerminologies((response) {
+    onSuccess(response.data);
+  }, (error) {
+    onError(error);
+  });
+}
+
+Future<void> getUserData(
+    Function(UserResponse) onSuccess, Function(ErrorResponse) onError) async {
+  await UserProvider.userRepository.apiGetUserData((response) {
+    saveUser(response.data);
+    onSuccess(response.data);
+  }, (error) {
+    onError(error);
+  });
+}
+
+Future<void> loadCheckUserType(Function(CheckUserTypeResponse) onSuccess,
+    Function(ErrorResponse) onError) async {
+  RequestProperties? requestProperties = getRequestProperties();
+  if (requestProperties != null) {
+    bool checkIfUserTypeAllowed =
+        await checkIfUserTypeSupportedAsync(requestProperties.userType);
+    if (checkIfUserTypeAllowed) {
+      onSuccess(CheckUserTypeResponse(true));
+    } else {
+      onError(ErrorResponse(-1, 'Invalid User Type'));
+    }
+  }
+}
+
+Future<void> loadCheckMobileLicense(
+    Function(CheckMobileLicenseResponse) onSuccess,
+    Function(ErrorResponse) onError) async {
+  await SettingsProvider.settingsRepository.apiCheckLicense((response) {
+    if (response.data.response == "true") {
+      onSuccess(response.data);
+    } else {
+      onError(ErrorResponse(-1, 'Invalid Mobile License'));
+    }
+  }, (error) {
+    onError(error);
+  });
+}
+
+Future<void> loadGetStudentRelative(
+    int? studentId,
+    Function(List<StudentOfRelativeResponse>) onSuccess,
+    Function(ErrorResponse) onError) async {
+  await UserProvider.userRepository.apiGetStudentRelative(studentId, ["1"],
+      (response, paginationData) {
     onSuccess(response.data);
   }, (error) {
     onError(error);
