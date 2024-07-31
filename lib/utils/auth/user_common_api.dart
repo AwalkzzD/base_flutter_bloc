@@ -10,8 +10,11 @@ import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_lic
 import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/check_user_type_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/get_parent_child_educational_programs_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_educational_program_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_relative_extended.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/auth/user_claim_helper.dart';
@@ -101,6 +104,7 @@ Future<void> getMobileLicenseUserMenus(
     Function(ErrorResponse) onError) async {
   await SettingsProvider.settingsRepository.apiGetMobileLicenseUserMenus(
       (response) {
+    saveMobileMenu(response.data);
     onSuccess(response.data);
   }, (error) {
     onError(error);
@@ -154,12 +158,124 @@ Future<void> loadCheckMobileLicense(
   });
 }
 
-Future<void> loadGetStudentRelative(
+void loadGetStudentRelative(
+  int? studentId,
+  Function(List<StudentOfRelativeResponse>) onSuccess,
+  Function(ErrorResponse) onError,
+) {
+  getStudentRelative(studentId, (response) {
+    onSuccess.call(response);
+  }, (error) {
+    onError(error);
+  });
+}
+
+Future<void> getStudentRelative(
     int? studentId,
     Function(List<StudentOfRelativeResponse>) onSuccess,
     Function(ErrorResponse) onError) async {
   await UserProvider.userRepository.apiGetStudentRelative(studentId, ["1"],
       (response, paginationData) {
+    onSuccess(response.data);
+  }, (error) {
+    onError(error);
+  });
+}
+
+List<StudentForRelativeExtended> studentRelativeExtendedList = [];
+
+Future<GetParentChildEducationalProgramsResponse>
+    loadGetParentChildAndEducationalPrograms(
+  Function(GetParentChildEducationalProgramsResponse) onSuccess,
+  Function(ErrorResponse) onError,
+) async {
+  studentRelativeExtendedList = [];
+  RequestProperties? requestProperties = getRequestProperties();
+  if (requestProperties?.userType == UserTypes.Parent) {
+    loadGetStudentRelative(requestProperties?.entityId, (studentList) {
+      loadAllRelativeWithPrograms(0, studentList, () {
+        saveStudentList(studentRelativeExtendedList);
+        if (studentRelativeExtendedList.isNotEmpty) {
+          saveStudent(studentRelativeExtendedList[0]);
+        }
+        onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: true));
+        return (GetParentChildEducationalProgramsResponse(isSuccess: true));
+      }, (error) {
+        onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: false));
+        return (GetParentChildEducationalProgramsResponse(isSuccess: false));
+        /*onError
+            .call(ErrorResponse(-1, "Failed to load relative with programs"));*/
+      });
+    }, (error) {
+      onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: false));
+      return (GetParentChildEducationalProgramsResponse(isSuccess: false));
+      /*onError.call(ErrorResponse(-1, "Failed to get Student Relative"));*/
+    });
+  } else if (requestProperties?.userType == UserTypes.Student) {
+    UserResponse? userResponse = getUser();
+    StudentOfRelativeResponse studentOfRelativeResponse =
+        StudentOfRelativeResponse(
+            id: userResponse?.entity?.id,
+            surname: userResponse?.surname,
+            givenName: userResponse?.givenName,
+            image: userResponse?.image);
+    StudentForRelativeExtended studentForRelativeExtended =
+        StudentForRelativeExtended(studentOfRelativeResponse);
+    loadGetStudentEducationPrograms(studentForRelativeExtended.id, (programs) {
+      studentForRelativeExtended.educationalPrograms = programs;
+    }, (error) {
+      onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: false));
+      return (GetParentChildEducationalProgramsResponse(isSuccess: false));
+      /*onError(ErrorResponse(-1, "errorMsg"));*/
+    });
+    studentRelativeExtendedList.add(studentForRelativeExtended);
+    saveStudentList(studentRelativeExtendedList);
+    if (studentRelativeExtendedList.isNotEmpty) {
+      saveStudent(studentRelativeExtendedList[0]);
+    }
+    onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: true));
+    return (GetParentChildEducationalProgramsResponse(isSuccess: true));
+  } else {
+    onSuccess(GetParentChildEducationalProgramsResponse(isSuccess: true));
+    return (GetParentChildEducationalProgramsResponse(isSuccess: true));
+  }
+  return (GetParentChildEducationalProgramsResponse(isSuccess: true));
+}
+
+void loadAllRelativeWithPrograms(
+    int index,
+    List<StudentOfRelativeResponse> studentList,
+    Function() onSuccess,
+    Function(ErrorResponse) onError) {
+  if (index > studentList.length - 1) {
+    onSuccess.call();
+  } else {
+    StudentOfRelativeResponse? student = studentList[index];
+    loadGetStudentEducationPrograms(student.id, (programs) {
+      StudentForRelativeExtended studentForRelativeExtended =
+          StudentForRelativeExtended(student);
+      studentForRelativeExtended.educationalPrograms = programs;
+      studentRelativeExtendedList.add(studentForRelativeExtended);
+      loadAllRelativeWithPrograms(index + 1, studentList, onSuccess, onError);
+    }, onError);
+  }
+}
+
+void loadGetStudentEducationPrograms(
+    int? studentId,
+    Function(List<StudentEducationalProgramResponse>) onSuccess,
+    Function(ErrorResponse) onError) {
+  getStudentEducationalPrograms(studentId, (response) {
+    onSuccess.call(response);
+  }, onError);
+}
+
+Future<void> getStudentEducationalPrograms(
+    int? studentId,
+    Function(List<StudentEducationalProgramResponse>) onSuccess,
+    Function(ErrorResponse) onError) async {
+  await UserProvider.userRepository.apiGetStudentEducationalProgram(
+      studentId, 1, (response, paginationData) {
     onSuccess(response.data);
   }, (error) {
     onError(error);

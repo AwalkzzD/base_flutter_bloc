@@ -87,6 +87,7 @@ class SettingsRepository extends RemoteRepository {
     response.fold((error) {
       onError(error);
     }, (success) {
+      saveTerminologiesList(success.data);
       onSuccess(success);
     });
   }

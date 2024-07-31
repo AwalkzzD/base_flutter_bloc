@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -18,6 +20,8 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
   final bool _isPaused = false;
 
   B getBloc();
+
+  AppBloc getAppBloc() => context.read<AppBloc>();
 
   @override
   void initState() {
@@ -156,6 +160,8 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
       );
     });
   }
+
+  StackRouter get router => AutoRouter.of(context);
 
   @override
   void dispose() {

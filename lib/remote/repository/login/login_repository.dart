@@ -6,6 +6,7 @@ import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/remote/utils/remote_utils.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
+import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:collection/collection.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
@@ -57,6 +58,7 @@ class LoginRepository extends RemoteRepository {
     print('Printing Cookie --> ${cookie?.name}');
 
     if (cookie != null) {
+      setLogin(true);
       onSuccess(SuccessResponse(200, data: cookie));
     } else {
       onError(ErrorResponse(-1, 'Cannot get login cookies'));

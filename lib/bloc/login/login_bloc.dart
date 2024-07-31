@@ -48,16 +48,6 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState((error).errorMsg));
             });
 
-          /// DoLoginEvent
-          case DoLoginEvent doLoginEvent:
-            emit(const LoadingState());
-            await LoginProvider.loginRepository
-                .apiDoLogin(doLoginEvent.cookieManager, (response) {
-              emit(DataState<Cookie>(response.data));
-            }, (error) {
-              emit(ErrorState((error).errorMsg));
-            });
-
           /// GetCompanyIdEvent
           case GetCompanyIdEvent getCompanyIdEvent:
             emit(const LoadingState());
@@ -150,15 +140,30 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(ErrorState(error.errorMsg));
             });
 
-          /// GetStudentRelativeEvent
-          case GetStudentRelativeEvent getStudentRelativeEvent:
+          /// GetParentChildAndEducationalProgramsEvent
+          case GetParentChildAndEducationalProgramsEvent
+            getParentChildAndEducationalProgramsEvent:
             emit(const LoadingState());
-            await loadGetStudentRelative(getStudentRelativeEvent.entityId,
-                (response) {
-              studentList = response;
-              emit(DataState(response));
+            await loadGetParentChildAndEducationalPrograms(
+                    (response) {}, (error) {})
+                .then((response) {
+              if (response.isSuccess) {
+                emit(DataState(response));
+              } else {
+                emit(const ErrorState('Something went wrong!'));
+              }
+            }, onError: (error) {
+              print(error.toString());
+            });
+
+          /// DoLoginEvent
+          case DoLoginEvent doLoginEvent:
+            emit(const LoadingState());
+            await LoginProvider.loginRepository
+                .apiDoLogin(doLoginEvent.cookieManager, (response) {
+              emit(DataState<Cookie>(response.data));
             }, (error) {
-              emit(ErrorState(error.errorMsg));
+              emit(ErrorState((error).errorMsg));
             });
         }
       },

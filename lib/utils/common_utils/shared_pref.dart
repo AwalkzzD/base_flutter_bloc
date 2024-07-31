@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
+import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/student_relative_extended.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
@@ -187,5 +190,53 @@ void saveUser(UserResponse user) {
 UserResponse? getUser() {
   UserResponse? userResponse =
       SpUtil.getObj(keyUser, (v) => UserResponse.fromJson(v));
+  return userResponse;
+}
+
+/// StudentList
+void saveStudentList(List<StudentForRelativeExtended> studentList) {
+  List<StudentForRelativeExtended> uniqueItems = [];
+  var uniqueIDs = studentList.map((e) => e.id).toSet();
+  for (var e in uniqueIDs) {
+    uniqueItems.add(studentList.firstWhere((i) => i.id == e));
+  }
+
+  SpUtil.putObjectList(keyStudentList, uniqueItems);
+}
+
+List<StudentForRelativeExtended> getStudentList() {
+  return SpUtil.getObjList(
+      keyStudentList, (v) => StudentForRelativeExtended.fromJson(v!));
+}
+
+/// Selected Student
+void saveStudent(StudentForRelativeExtended user) {
+  SpUtil.putObject(keyStudent, user);
+}
+
+StudentForRelativeExtended? getStudent() {
+  StudentForRelativeExtended? userResponse =
+      SpUtil.getObj(keyStudent, (v) => StudentForRelativeExtended.fromJson(v));
+  return userResponse;
+}
+
+/// Terminologies
+void saveTerminologiesList(List<TerminologyListResponse> menuList) {
+  SpUtil.putObjectList(keyTerminologies, menuList);
+}
+
+List<TerminologyListResponse> getTerminologiesList() {
+  return SpUtil.getObjList(
+      keyTerminologies, (v) => TerminologyListResponse.fromJson(v!));
+}
+
+/// Mobile Menu
+void saveMobileMenu(MobileLicenseMenuResponse user) {
+  SpUtil.putObject(keyMobileMenu, user);
+}
+
+MobileLicenseMenuResponse? getMobileMenu() {
+  MobileLicenseMenuResponse? userResponse = SpUtil.getObj(
+      keyMobileMenu, (v) => MobileLicenseMenuResponse.fromJson(v));
   return userResponse;
 }
