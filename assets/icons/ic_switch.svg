@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="41" height="38" viewBox="0 0 41 38">
+  <defs>
+    <filter id="Rectangle_2281" x="0" y="0" width="38" height="38" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Switch" transform="translate(6 9)">
+    <g id="Rectangle_2280" data-name="Rectangle 2280" fill="rgba(8,38,58,0.09)" stroke="#08263a" stroke-width="1" opacity="0.39">
+      <rect width="35" height="20" rx="10" stroke="none"/>
+      <rect x="0.5" y="0.5" width="34" height="19" rx="9.5" fill="none"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -6, -9)" filter="url(#Rectangle_2281)">
+      <g id="Rectangle_2281-2" data-name="Rectangle 2281" transform="translate(6 9)" fill="#08263a" stroke="rgba(127,20,23,0.16)" stroke-width="1">
+        <rect width="20" height="20" rx="10" stroke="none"/>
+        <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" fill="none"/>
+      </g>
+    </g>
+  </g>
+</svg>

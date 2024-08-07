@@ -12,6 +12,8 @@ class LoadLoginAccessEvent extends LoginBlocEvent {
   LoadLoginAccessEvent(this.codeVerifier, this.code);
 }
 
+class InitUserApiLoginEvent extends LoginBlocEvent {}
+
 class DoLoginEvent extends LoginBlocEvent {
   final WebviewCookieManager cookieManager;
 

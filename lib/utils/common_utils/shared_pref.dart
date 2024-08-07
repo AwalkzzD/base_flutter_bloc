@@ -34,6 +34,7 @@ const String keyStudent = "student";
 const String keyAuthenticationRequired = "authenticationRequired";
 const String keyCalendarViewType = "calendarViewType";
 const String keyDashboardElements = "dashboardElements";
+const String keyNameSetting = "name_setting";
 
 Future<void> sharedPrefClear() async {
   await SpUtil.clear();
@@ -63,7 +64,7 @@ double getScaleFactorHeight() {
 }
 
 /// Theme
-void setThemeMode(bool isDark) {
+void setThemeMode({required bool isDark}) {
   SpUtil.putBool(keyThemeMode, isDark);
 }
 
@@ -239,4 +240,13 @@ MobileLicenseMenuResponse? getMobileMenu() {
   MobileLicenseMenuResponse? userResponse = SpUtil.getObj(
       keyMobileMenu, (v) => MobileLicenseMenuResponse.fromJson(v));
   return userResponse;
+}
+
+/// Name Setting
+void setNameSetting(bool? flag) {
+  SpUtil.putBool(keyNameSetting, flag ?? false);
+}
+
+bool getNameSetting() {
+  return SpUtil.getBool(keyNameSetting, defValue: false);
 }

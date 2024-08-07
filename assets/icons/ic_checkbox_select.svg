@@ -1,0 +1,10 @@
+<svg id="Component_94_43" data-name="Component 94 – 43" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 18 18">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#7f1417"/>
+      <stop offset="1" stop-color="#bc212c"/>
+    </linearGradient>
+  </defs>
+  <rect id="Rectangle_2382" width="18" height="18" rx="4" fill="url(#linear-gradient)"/>
+  <path id="check_ic" d="M4.072,6.067,9.851.2A.665.665,0,0,1,10.8.2a.691.691,0,0,1,0,.966L4.072,8,.2,4.065A.69.69,0,0,1,.2,3.1a.667.667,0,0,1,.952,0Z" transform="translate(3.5 5)" fill="#fff"/>
+</svg>

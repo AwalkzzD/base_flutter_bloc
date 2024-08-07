@@ -1,8 +1,15 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/theme/theme_bloc.dart';
+import 'package:base_flutter_bloc/utils/constants/app_colors.dart';
+import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
@@ -15,22 +22,55 @@ abstract class BasePage extends StatefulWidget {
   BasePageState getState();
 }
 
-abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
-    with WidgetsBindingObserver {
+abstract class BasePageState<T extends BasePage, B extends BaseBloc>
+    extends State<T> with WidgetsBindingObserver {
   final bool _isPaused = false;
 
-  B getBloc();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  AppBloc getAppBloc() => context.read<AppBloc>();
+  B get getBloc;
+
+  AppBloc get appBloc => context.read<AppBloc>();
+
+  ThemeBloc get themeBloc => context.read<ThemeBloc>();
+
+  PageRouteInfo? get backButtonInterceptorRoute => null;
+
+  Function()? get onCustomBackPress => null;
+
+  StackRouter get router => AutoRouter.of(context);
+
+  Widget? get customAppBar => null;
+
+  Widget? get customBottomNavigationBar => null;
+
+  Widget? get customDrawer => null;
+
+  Color? get customScaffoldColor => null;
 
   @override
   void initState() {
     super.initState();
-    getBloc();
+    getBloc;
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       onReady();
     });
+    if (backButtonInterceptorRoute != null) {
+      BackButtonInterceptor.add(customBackInterceptor);
+    }
+  }
+
+  Future<bool> customBackInterceptor(
+      bool stopDefaultButtonEvent, RouteInfo routeInfo) async {
+    if (routeInfo.currentRoute(context)?.settings.name ==
+        backButtonInterceptorRoute?.routeName) {
+      onCustomBackPress?.call();
+      return true;
+    } else {
+      router.back();
+      return true;
+    }
   }
 
   void onResume() {}
@@ -55,9 +95,15 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
   @override
   Widget build(BuildContext context) {
     return BlocProvider<B>(
-      create: (BuildContext context) => getBloc(),
-      child: getCustomScaffold(),
-    );
+        create: (BuildContext context) => getBloc, child: getCustomScaffold());
+  }
+
+  void openDrawer() {
+    _scaffoldKey.currentState?.openDrawer();
+  }
+
+  void closeDrawer() {
+    _scaffoldKey.currentState?.closeDrawer();
   }
 
   Widget getCustomScaffold() {
@@ -66,17 +112,26 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
 
   Scaffold getScaffold() {
     return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: customScaffoldColor,
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
+      drawer: customDrawer,
+      appBar: customAppBar as PreferredSizeWidget?,
+      bottomNavigationBar: customBottomNavigationBar,
       body: BlocProvider<B>(
-          create: (BuildContext context) => getBloc(),
+          create: (BuildContext context) => getBloc,
           child: buildWidget(context)),
     );
   }
 
+  SystemUiOverlayStyle getSystemUIOverlayStyle() {
+    return themeOf().uiOverlayStyleCommon();
+  }
+
   Widget buildWidget(BuildContext context);
 
-  getBlocConsumer({
+  customBlocConsumer({
+    B? bloc,
     Function(BaseState state)? onInitialReturn,
     Function(BaseState state)? onInitialPerform,
     Function(BaseState state)? onLoadingReturn,
@@ -88,7 +143,7 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
     Function(BaseState state)? onErrorPerform,
   }) {
     return BlocConsumer<B, BaseState>(
-        bloc: getBloc(),
+        bloc: bloc ?? getBloc,
         buildWhen: (previousState, currentState) {
           return (returnWhen != null)
               ? returnWhen(previousState, currentState)
@@ -125,20 +180,44 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
           switch (state) {
             case InitialState():
               (onInitialReturn == null)
-                  ? print('Initial State')
+                  ? log('Initial State')
                   : onInitialReturn(state);
             case LoadingState():
               (onLoadingPerform == null)
-                  ? print('Loading Data')
+                  ? log('Loading Data')
                   : onLoadingPerform(state);
             case DataState():
               onDataPerform(state);
             case ErrorState():
               (onErrorPerform == null)
-                  ? print('Error fetching Data')
+                  ? log('Error fetching Data')
                   : onErrorPerform(state);
             default:
-              print('Invalid State');
+              log('Invalid State');
+          }
+        });
+  }
+
+  genericBlocConsumer<BL extends StateStreamable<ST>, ST>({
+    required BL bloc,
+    required Function(ST state) builder,
+    Function(ST state)? listener,
+    Function(ST previousState, ST currentState)? buildWhen,
+    Function(ST previousState, ST currentState)? returnWhen,
+  }) {
+    return BlocConsumer<BL, ST>(
+        bloc: bloc,
+        buildWhen: (previousState, currentState) {
+          return (returnWhen != null)
+              ? returnWhen(previousState, currentState)
+              : true;
+        },
+        builder: (BuildContext context, state) {
+          return builder(state);
+        },
+        listener: (BuildContext context, state) {
+          if (listener != null) {
+            listener(state);
           }
         });
   }
@@ -154,18 +233,17 @@ abstract class BasePageState<B extends BaseBloc> extends State<BasePage>
   showCustomLoader() {
     context.loaderOverlay.show(widgetBuilder: (_) {
       return Container(
-        color: Colors.white,
+        color: white,
         child:
-            const Center(child: CircularProgressIndicator(color: Colors.red)),
+            const Center(child: CircularProgressIndicator(color: primaryColor)),
       );
     });
   }
 
-  StackRouter get router => AutoRouter.of(context);
-
   @override
   void dispose() {
-    getBloc().close();
+    getBloc.close();
+    BackButtonInterceptor.remove(customBackInterceptor);
     super.dispose();
   }
 }

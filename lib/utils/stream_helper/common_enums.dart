@@ -1,5 +1,7 @@
 import 'package:base_flutter_bloc/utils/enum_to_string/enum_to_string.dart';
 
+enum ScreenType { drawer, login, normal, splash, language }
+
 enum NotificationDeviceType { APNS, FCM }
 
 enum MobilePlatform { Android, Ios }
