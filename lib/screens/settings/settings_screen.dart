@@ -3,11 +3,14 @@ import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc.dart';
+import 'package:base_flutter_bloc/bloc/settings/settings_bloc_event.dart';
+import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../base/routes/router/app_router.dart';
 import '../../bloc/theme/theme_bloc_event.dart';
@@ -16,6 +19,7 @@ import '../../utils/common_utils/shared_pref.dart';
 import '../../utils/constants/app_images.dart';
 import '../../utils/constants/app_styles.dart';
 import '../../utils/constants/app_theme.dart';
+import '../../utils/custom_switch/common_switch.dart';
 import '../../utils/widgets/image_view.dart';
 
 class SettingsScreen extends BasePage {
@@ -32,6 +36,12 @@ class SettingsScreen extends BasePage {
 
 class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
   final SettingsBloc _bloc = SettingsBloc();
+
+  @override
+  void onReady() {
+    initData();
+    super.onReady();
+  }
 
   @override
   Widget? get customAppBar => AppBarBackButton.build(
@@ -61,7 +71,15 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
     return ListView(
       children: [
         SizedBox(height: 14.h),
-        settingSwitchTile("settings_screen.label_hide_my_birthday".tr()),
+        customBlocConsumer(
+          onDataReturn: (BaseState<dynamic> state) {
+            return settingSwitchTile(
+                "settings_screen.label_hide_my_birthday".tr());
+          },
+          onDataPerform: (BaseState<dynamic> state) {
+            hideLoader();
+          },
+        ),
         settingThemeSwitchTile(),
         settingTile(
             AppImages.icLanguage, "settings_screen.label_app_language".tr(),
@@ -79,9 +97,9 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         settingTile(
             AppImages.icLicense, "settings_screen.label_license_and_terms".tr(),
             () async {
-          /*await launchUrl(
+          await launchUrl(
             Uri.parse(ApiEndpoints.licenseAndTerms),
-          );*/
+          );
         }),
         settingTile(
             AppImages.icContactUs, "settings_screen.label_contact_us".tr(), () {
@@ -194,13 +212,17 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
   }
 
   Widget settingSwitchTile(String settingTittle) {
-    return const SizedBox();
-    /*return CommonSwitch.build(
+    return CommonSwitch.build(
       title: settingTittle,
       switchStream: getBloc.isHideMyBirthdayOn.stream,
       onValueChanged: (val) {
-        updateProfileHideBirthDay(val);
+        // updateProfileHideBirthDay(val);
       },
-    );*/
+    );
+  }
+
+  void initData() {
+    showLoader();
+    getBloc.add(GetUserProfileEvent());
   }
 }

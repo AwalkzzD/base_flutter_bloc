@@ -232,21 +232,20 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
   }
 
   showLoader() {
-    context.loaderOverlay.show();
+    context.loaderOverlay.show(widgetBuilder: (_) {
+      return Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: Center(
+            child: CircularProgressIndicator(
+                color: Theme.of(context)
+                    .progressIndicatorTheme
+                    .circularTrackColor)),
+      );
+    });
   }
 
   hideLoader() {
     context.loaderOverlay.hide();
-  }
-
-  showCustomLoader() {
-    context.loaderOverlay.show(widgetBuilder: (_) {
-      return Container(
-        color: white,
-        child:
-            const Center(child: CircularProgressIndicator(color: primaryColor)),
-      );
-    });
   }
 
   @override

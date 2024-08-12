@@ -4,10 +4,12 @@ import 'package:base_flutter_bloc/remote/repository/user/request/get_company_req
 import 'package:base_flutter_bloc/remote/repository/user/request/get_student_educational_programs_request.dart';
 import 'package:base_flutter_bloc/remote/repository/user/request/get_students_relative_request.dart';
 import 'package:base_flutter_bloc/remote/repository/user/request/get_user_data_request.dart';
+import 'package:base_flutter_bloc/remote/repository/user/request/get_user_profile_request.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_educational_program_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
+import 'package:base_flutter_bloc/remote/repository/user/response/user_profile_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/utils/remote/pagination_data.dart';
 import 'package:base_flutter_bloc/utils/remote/pagination_utils.dart';
@@ -95,6 +97,20 @@ class UserRepository extends RemoteRepository {
       onError(error);
     }, (success) {
       onSuccess(success, getPaginationHeader(success.rawResponse));
+    });
+  }
+
+  Future<void> apiGetUserProfile(
+    Function(SuccessResponse<UserProfileResponse>) onSuccess,
+    Function(ErrorResponse) onError,
+  ) async {
+    final response = await dataSource
+        .makeRequest<UserProfileResponse>(GetUserProfileRequest());
+
+    response.fold((error) {
+      onError(error);
+    }, (success) {
+      onSuccess(success);
     });
   }
 }

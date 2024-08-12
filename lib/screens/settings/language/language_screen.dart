@@ -97,8 +97,6 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
   @override
   LanguageBloc get getBloc => _bloc;
 
-  /// -----------------------------------------------------------------------------------------------------------------------
-
   Widget buildSubmitButton() {
     return InkWell(
       onTap: () {

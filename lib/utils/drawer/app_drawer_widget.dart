@@ -550,7 +550,7 @@ class _AppDrawerWidgetState
   }
 
   void logout() {
-    showCustomLoader();
+    showLoader();
     /*apiNotificationUnRegister((response){
       getBloc().hideLoadingDialog();
       doLogout();
