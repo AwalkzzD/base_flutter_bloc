@@ -1,5 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:base_flutter_bloc/base/routes/router/app_router.gr.dart';
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/utils/drawer/app_drawer_bloc.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
@@ -13,7 +12,7 @@ import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/menu_utils.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:base_flutter_bloc/utils/widgets/strings_utils.dart';
@@ -24,9 +23,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/app_styles.dart';
 import '../widgets/terminologies_utils.dart';
 
-@RoutePage()
 class AppDrawerWidget extends BasePage {
-  const AppDrawerWidget({super.key});
+  final Function() closeDrawerFunc;
+
+  const AppDrawerWidget({super.key, required this.closeDrawerFunc});
 
   @override
   BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
@@ -40,6 +40,9 @@ class _AppDrawerWidgetState
   final AppDrawerBloc _bloc = AppDrawerBloc();
 
   final MenuUtils menuUtils = MenuUtils();
+
+  @override
+  bool get enableBackPressed => false;
 
   @override
   SystemUiOverlayStyle getSystemUIOverlayStyle() {
@@ -330,7 +333,7 @@ class _AppDrawerWidgetState
                             10.h, 8.h, 0.h, 10.h),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            router.pop();
                           },
                           child: ImageView(
                             image: AppImages.icDrawerClose,
@@ -453,8 +456,8 @@ class _AppDrawerWidgetState
           : const SizedBox(),
       drawerTileWidget(
           string("settings_screen.label_settings"), AppImages.icOpSetting, () {
-        Navigator.pop(context);
-        router.push(const SettingsRoute());
+        widget.closeDrawerFunc();
+        router.pushNamed(AppRouter.settingsRoute);
       }),
       drawerTileWidget(
           string("about_us.label_about_app"), AppImages.icOpAboutUs, () {

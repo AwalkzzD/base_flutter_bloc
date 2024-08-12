@@ -1,29 +1,101 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:base_flutter_bloc/base/routes/router/app_router.gr.dart';
-import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
+import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
+import 'package:base_flutter_bloc/screens/home/home_screen.dart';
+import 'package:base_flutter_bloc/screens/login/login_screen.dart';
+import 'package:base_flutter_bloc/screens/settings/language/language_screen.dart';
+import 'package:base_flutter_bloc/screens/settings/settings_screen.dart';
+import 'package:base_flutter_bloc/screens/splash/splash_screen.dart';
+import 'package:base_flutter_bloc/utils/drawer/app_drawer_widget.dart';
+import 'package:base_flutter_bloc/utils/widgets/custom_page_route.dart';
 import 'package:flutter/material.dart';
 
-@AutoRouterConfig(replaceInRouteName: 'Screen|Page,Route')
-class AppRouter extends RootStackRouter {
-  bool enableLogging;
+class AppRouter {
+  AppRouter._();
 
-  AppRouter({this.enableLogging = false});
+  /*
+   * generateRoute method generates route to the specific page.
+   * It takes RouteSettings object as input parameter, and based on settings.name and generates
+   * a new route to the screen.
+   *
+   * It can also take arguments passed in navigator object, like
+   * var screenData = settings.arguments as String;
+   * and pass to the screen in page route builder.
+   * */
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    CustomRouteArguments arguments = CustomRouteArguments();
+    if (settings.arguments != null) {
+      arguments = settings.arguments as CustomRouteArguments;
+    }
+    switch (settings.name) {
+      /// Home Screen Route
+      case homeRoute:
+        return buildRoute(screen: HomeScreen(fromScreen: arguments.screenType));
 
-  @override
-  GlobalKey<NavigatorState> get navigatorKey => globalNavigatorKey;
+      /// Login Screen Route
+      case loginRoute:
+        return buildRoute(screen: const LoginScreen());
 
-  @override
-  RouteType get defaultRouteType => const RouteType.cupertino();
+      /// App Drawer Route
+      case appDrawerRoute:
+        return buildRoute(
+            screen: AppDrawerWidget(
+                closeDrawerFunc: arguments.onCloseDrawer ?? () {}));
 
-  @override
-  List<AutoRoute> get routes => [
-        AutoRoute(page: SplashRoute.page, initial: true),
-        AutoRoute(page: LoginRoute.page),
-        AutoRoute(page: HomeRoute.page),
-        AutoRoute(page: SettingsRoute.page),
-        AutoRoute(page: AppDrawerWidget.page),
-      ];
+      /// Splash Screen Route
+      case splashRoute:
+        return buildRoute(screen: const SplashScreen());
 
-  @override
-  List<AutoRouteGuard> get guards => [];
+      /// Settings Screen Route
+      case settingsRoute:
+        return buildRoute(screen: const SettingsScreen());
+
+      /// Language Screen Route
+      case languageRoute:
+        return buildRoute(screen: const LanguageScreen());
+
+      /// Default Route
+      default:
+        return buildRoute(screen: const SplashScreen());
+    }
+  }
+
+  /*
+  * util method to return page route
+  * if isCupertino is true, it generates Cupertino Page Route, else it generates Material Page Route
+  * */
+  static PageRoute buildRoute({
+    required Widget screen,
+    RouteSettings? routeSettings,
+    bool isCupertino = false,
+  }) {
+    return (isCupertino == true)
+        ? CustomCupertinoPageRoute(
+            builder: (_) => screen, settings: routeSettings)
+        : CustomPageRoute(builder: (_) => screen, settings: routeSettings);
+    // return ;
+  }
+
+  /*
+   * errorRoute method to generate route to No Page Found Screen, when navigation error occurs.
+   * errorRoute is called when an unknown route is passed to navigator object.
+   * */
+  static Route<dynamic> errorRoute(RouteSettings settings) {
+    return CustomPageRoute(
+        builder: (_) => const Scaffold(
+              body: Center(
+                child: Text('Page not found!'),
+              ),
+            ));
+  }
+
+  /// -----------------------------------------------App Routes----------------------------------------------- ///
+
+  /*
+  * Custom static route names for all pages in the app
+  * */
+  static const String splashRoute = '/splash';
+  static const String loginRoute = '/login';
+  static const String homeRoute = '/home';
+  static const String appDrawerRoute = '/appDrawer';
+  static const String settingsRoute = '/settings';
+  static const String languageRoute = '/language';
 }

@@ -4,7 +4,7 @@ import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/auth/user_claim_helper.dart';
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';

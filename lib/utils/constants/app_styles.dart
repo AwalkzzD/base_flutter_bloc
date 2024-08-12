@@ -1,6 +1,6 @@
 import 'package:base_flutter_bloc/utils/constants/app_colors.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
 const String fontFamilyRoboto = "Roboto";

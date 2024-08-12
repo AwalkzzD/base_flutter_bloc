@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:auto_route/auto_route.dart';
-import 'package:base_flutter_bloc/base/routes/router/app_router.gr.dart';
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
+import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc.dart';
 import 'package:base_flutter_bloc/bloc/login/login_bloc_event.dart';
@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
-@RoutePage()
 class LoginScreen extends BasePage {
   const LoginScreen({super.key});
 
@@ -84,7 +83,6 @@ class _LoginScreenState extends BasePageState<LoginScreen, LoginBloc> {
         }
       },
       onErrorPerform: (state) {
-        router.navigate(const LoginRoute());
         showToast(state.errorMessage ?? 'Unexpected Error');
       },
     );
@@ -152,6 +150,9 @@ class _LoginScreenState extends BasePageState<LoginScreen, LoginBloc> {
   }
 
   void navigateToNextScreen() {
-    router.replace(HomeRoute(fromScreen: ScreenType.login));
+    router.pushReplacementNamed(AppRouter.homeRoute,
+        arguments: CustomRouteArguments(screenType: ScreenType.login));
+    /*Navigator.pushReplacementNamed(context, AppRouter.homeRoute,
+        arguments: ScreenType.login);*/
   }
 }

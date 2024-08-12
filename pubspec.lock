@@ -42,13 +42,13 @@ packages:
     source: hosted
     version: "2.11.0"
   auto_route:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: auto_route
-      sha256: ab85e8e50907d88e3d5ba3190fe17623643c2faaa989eb7fbbb346028591f8ca
+      sha256: bb673104dbdc22667d01ec668df3d2a358b6e3da481428eeb1151933cfc1a7d6
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.2.0"
   auto_route_generator:
     dependency: "direct dev"
     description:
@@ -379,14 +379,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_spinkit:
-    dependency: "direct main"
-    description:
-      name: flutter_spinkit
-      sha256: d2696eed13732831414595b98863260e33e8882fc069ee80ec35d4ac9ddb0472
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.2.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -749,14 +741,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.0"
-  real_time_chart:
-    dependency: "direct main"
-    description:
-      name: real_time_chart
-      sha256: fb24041e9e949295e5f3eabb65ec2835fb86d4dc6a35a382bc9d2e9998915ecc
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
   rxdart:
     dependency: "direct main"
     description:
@@ -914,22 +898,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  syncfusion_flutter_charts:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_charts
-      sha256: d39bd6022083f66e24664d562c6416c25465fb2969df2080a9eac242ef371361
-      url: "https://pub.dev"
-    source: hosted
-    version: "26.2.7"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      sha256: fd4d2cdbf8d0d1e3441817cb8a03f896566fad5187788957e78492fe16800388
-      url: "https://pub.dev"
-    source: hosted
-    version: "26.2.7"
   synchronized:
     dependency: "direct main"
     description:
@@ -1038,10 +1006,10 @@ packages:
     dependency: transitive
     description:
       name: web
-      sha256: d43c1d6b787bf0afad444700ae7f4db8827f701bc61c255ac8d328c6f4d52062
+      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "0.5.1"
   web_socket:
     dependency: transitive
     description:

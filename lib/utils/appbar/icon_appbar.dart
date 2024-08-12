@@ -1,4 +1,4 @@
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ class IconAppBar extends StatelessWidget {
             imageType: ImageType.svg,
             height: height ?? 16.h,
             width: width ?? 16.h,
-            color: color,
+            color: color ?? Theme.of(context).appBarTheme.iconTheme?.color,
           ),
     );
   }

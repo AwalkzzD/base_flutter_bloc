@@ -2,24 +2,32 @@ import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/bloc/language/language_bloc.dart';
+import 'package:base_flutter_bloc/bloc/language/language_bloc_event.dart';
 import 'package:base_flutter_bloc/utils/constants/app_styles.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
-import '../../../utils/appbar/backbutton_appbar.dart';
+import '../../../base/routes/router_utils/custom_route_arguments.dart';
+import '../../../utils/appbar/back_button_appbar.dart';
 import '../../../utils/common_utils/common_utils.dart';
 import '../../../utils/common_utils/shared_pref.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../../utils/constants/app_images.dart';
 import '../../../utils/constants/app_theme.dart';
 import '../../../utils/localization/language_model.dart';
-import '../../../utils/localization/locationzation_utils.dart';
+import '../../../utils/localization/localization_utils.dart';
+import '../../../utils/stream_helper/common_enums.dart';
 import '../../../utils/widgets/common_widgets.dart';
 import '../../../utils/widgets/image_view.dart';
 
 class LanguageScreen extends BasePage {
   const LanguageScreen({super.key});
+
+  /*static Route<dynamic> route() {
+    return CustomPageRoute(builder: (context) => const LanguageScreen());
+  }*/
 
   @override
   BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
@@ -30,17 +38,21 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
   final LanguageBloc _bloc = LanguageBloc();
 
   @override
-  void onReady() {
+  void initState() {
+    // printNavigationStack();
+    getBloc.add(LoadAllLanguagesEvent());
     getDefaultLanguageList().forEach((element) {
       if (getLanguage() == element.languageCode) {
-        // getBloc.languageSelected.value = element;
+        getBloc.add(ChangeLanguageEvent(language: element));
       }
     });
+    super.initState();
   }
 
   @override
   Widget? get customAppBar => AppBarBackButton.build(
         onBackPressed: () {
+          /*router.back();*/
           Navigator.pop(context);
         },
         title: string("settings_screen.label_app_language"),
@@ -48,36 +60,37 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
 
   @override
   Widget buildWidget(BuildContext context) {
-    var a = getBloc.selectedLanguage;
-    return Column(
-      children: [
-        Expanded(
-          child: StreamBuilder<LanguageModel>(
-            stream: a,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                List<LanguageModel> languages = getBloc().languageList;
-                return ListView.builder(
-                  padding: EdgeInsets.fromLTRB(0, 10.h, 0.h, 10.h),
-                  itemCount: languages.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    LanguageModel data = languages[index];
-                    var isSelected = (data.languageTitle ==
-                        getBloc.languageSelected.value.languageTitle);
-                    return buildLanguageItem(data, isSelected, () {
-                      getBloc().languageSelected.value =
-                          getBloc().languageList[index];
-                    });
-                  },
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
-        ),
-        buildSubmitButton()
-      ],
+    return customBlocConsumer(
+      onDataReturn: (state) {
+        switch (state.data) {
+          case LanguageModel languageModel:
+            return Column(
+              children: [
+                Expanded(
+                  child: (getBloc.languageList != null)
+                      ? ListView.builder(
+                          padding: EdgeInsets.fromLTRB(0, 10.h, 0.h, 10.h),
+                          itemCount: getBloc.languageList?.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            LanguageModel data = getBloc.languageList![index];
+                            var isSelected = (data.languageTitle ==
+                                getBloc.selectedLanguage?.languageTitle);
+                            return buildLanguageItem(data, isSelected, () {
+                              setState(() {
+                                getBloc.add(ChangeLanguageEvent(
+                                    language: getBloc.languageList![index]));
+                              });
+                            });
+                          },
+                        )
+                      : const SizedBox(),
+                ),
+                buildSubmitButton()
+              ],
+            );
+        }
+      },
+      onDataPerform: (state) {},
     );
   }
 
@@ -89,8 +102,11 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
   Widget buildSubmitButton() {
     return InkWell(
       onTap: () {
-        /*updateProfileLanguage(
-            getBloc.languageSelected.value.languageCode ?? "en-GB");*/
+        changeLanguage(getBloc.selectedLanguage?.languageCode ?? "en-GB");
+        router.pushNamedAndRemoveUntil(
+            AppRouter.homeRoute,
+            arguments: CustomRouteArguments(screenType: ScreenType.language),
+            (route) => false);
       },
       child: Container(
         padding: EdgeInsetsDirectional.fromSTEB(24.h, 18.h, 24.h, 18.h),

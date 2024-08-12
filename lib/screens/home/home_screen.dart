@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
@@ -9,22 +6,19 @@ import 'package:base_flutter_bloc/bloc/home/home_bloc.dart';
 import 'package:base_flutter_bloc/bloc/utils/bottom_bar/app_bottom_bar_bloc.dart';
 import 'package:base_flutter_bloc/bloc/utils/bottom_bar/app_bottom_bar_bloc_event.dart';
 import 'package:base_flutter_bloc/bloc/utils/bottom_bar/app_bottom_bar_bloc_state.dart';
-import 'package:base_flutter_bloc/utils/appbar/appbar_divider_widget.dart';
-import 'package:base_flutter_bloc/utils/appbar/appbar_profile_view.dart';
-import 'package:base_flutter_bloc/utils/appbar/home_appbar.dart';
-import 'package:base_flutter_bloc/utils/appbar/trailing_buttons/barcode_appbar_button.dart';
+import 'package:base_flutter_bloc/utils/appbar/src_app_bar.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/app_bottom_bar.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/lazy_load_indexed_stack.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/r_nav_item.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
 import 'package:base_flutter_bloc/utils/drawer/app_drawer_widget.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/common_enums.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-@RoutePage()
 class HomeScreen extends BasePage {
   final ScreenType fromScreen;
 
@@ -101,7 +95,7 @@ class _HomeScreenState extends BasePageState<HomeScreen, HomeBloc> {
       bloc: _appBottomBarBloc,
       builder: (state) {
         return LazyLoadIndexedStack(
-          index: state.tabIndex ?? 0,
+          index: state.tabIndex,
           preloadIndexes: const [],
           children: screens,
         );
@@ -110,11 +104,9 @@ class _HomeScreenState extends BasePageState<HomeScreen, HomeBloc> {
   }
 
   @override
-  Widget? get customDrawer {
-    return SizedBox(
-        width: isTablet() ? 0.65.sw : double.infinity,
-        child: const AppDrawerWidget());
-  }
+  Widget? get customDrawer => SizedBox(
+      width: isTablet() ? 0.65.sw : double.infinity,
+      child: AppDrawerWidget(closeDrawerFunc: () => closeDrawer()));
 
   @override
   Widget? get customBottomNavigationBar =>
@@ -128,42 +120,43 @@ class _HomeScreenState extends BasePageState<HomeScreen, HomeBloc> {
                 navTabs: bottomTabs,
                 onMenuClick: (data, index) {
                   if (index == 0) {
-                    Navigator.of(context).pop();
+                    router.pop();
                     Future.delayed(const Duration(milliseconds: 500), () {
                       showToast('Navigate to Send Message Screen');
                     });
                   }
                   if (index == 1) {
-                    Navigator.of(context).pop();
+                    router.pop();
                     Future.delayed(const Duration(milliseconds: 500), () {
                       showToast('Navigate to Apply For Leave Screen');
                     });
                   }
                 },
                 onTabSelected: (index) {
-                  log('Current Index is -> $index');
                   _appBottomBarBloc.add(TabChangeEvent(tabIndex: index));
                 });
           });
 
-  /*BlocBuilder(
-        bloc: _appBottomBarBloc,
-        buildWhen: (previousIndexState, currentIndexState) {
-          return previousIndexState.tabIndex != currentIndexState.tabIndex;
-        },
-        builder: (BuildContext context, state) {
-
-        },
-      );*/
-
   @override
   HomeBloc get getBloc => _bloc;
 
-/*  @override
-  PageRouteInfo? get backButtonInterceptorRoute => const HomeRoute();
+  @override
+  bool get customBackPressed => true;
 
   @override
-  Function()? get onCustomBackPress => () {
-        log('Custom Back Press Event');
-      };*/
+  void onBackPressed(bool didPop, BuildContext context) {
+    if (!didPop) {
+      if (isDrawerOpen()) {
+        closeDrawer();
+      } else {
+        if (_appBottomBarBloc.currentIndex != 0) {
+          _appBottomBarBloc.add(TabChangeEvent(tabIndex: 0));
+        } else if (_appBottomBarBloc.currentIndex == 0) {
+          SystemNavigator.pop();
+        } else {
+          router.maybePop();
+        }
+      }
+    }
+  }
 }

@@ -1,26 +1,29 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
+import '../../base/routes/router/app_router.dart';
 import '../../bloc/theme/theme_bloc_event.dart';
-import '../../utils/appbar/backbutton_appbar.dart';
+import '../../utils/appbar/back_button_appbar.dart';
 import '../../utils/common_utils/shared_pref.dart';
 import '../../utils/constants/app_images.dart';
 import '../../utils/constants/app_styles.dart';
 import '../../utils/constants/app_theme.dart';
 import '../../utils/widgets/image_view.dart';
 
-@RoutePage()
 class SettingsScreen extends BasePage {
   const SettingsScreen({super.key});
+
+  /*static Route<dynamic> route() {
+    return CustomPageRoute(builder: (context) => const SettingsScreen());
+  }*/
 
   @override
   BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
@@ -63,7 +66,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         settingTile(
             AppImages.icLanguage, "settings_screen.label_app_language".tr(),
             () {
-          // Navigator.push(context, LanguageScreen.route());
+          Navigator.pushNamed(context, AppRouter.languageRoute);
         }),
         settingTile(AppImages.icNavigation,
             "settings_screen.label_navigation_preferences".tr(), () {
@@ -154,7 +157,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
                 width: 45.h,
                 height: 25.h,
                 toggleSize: 23.h,
-                value: !themeBloc.state.isDarkMode,
+                value: themeBloc.state.isDarkMode,
                 padding: 0,
                 activeColor: themeOf().activeSwitchBgColor,
                 activeSwitchBorder: Border.all(
@@ -168,17 +171,17 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
                     image: AppImages.icActiveIcon, imageType: ImageType.svg),
                 inactiveIcon: const ImageView(
                     image: AppImages.icInActiveIcon, imageType: ImageType.svg),
-                toggleColor: !themeBloc.state.isDarkMode
-                    ? themeOf().activeSwitchToggleColor
-                    : themeOf().inActiveSwitchToggleColor,
+                toggleColor: themeBloc.state.isDarkMode
+                    ? themeOf().inActiveSwitchToggleColor
+                    : themeOf().activeSwitchToggleColor,
                 showOnOff: false,
                 onToggle: (val) {
                   setState(() {
-                    setThemeMode(isDark: !val);
+                    setThemeMode(isDark: val);
                     if (val) {
-                      themeBloc.add(ToggleLightThemeEvent());
-                    } else {
                       themeBloc.add(ToggleDarkThemeEvent());
+                    } else {
+                      themeBloc.add(ToggleLightThemeEvent());
                     }
                   });
                 },
@@ -190,7 +193,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
     );
   }
 
-  settingSwitchTile(String settingTittle) {
+  Widget settingSwitchTile(String settingTittle) {
     return const SizedBox();
     /*return CommonSwitch.build(
       title: settingTittle,

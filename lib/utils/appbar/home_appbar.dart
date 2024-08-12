@@ -1,7 +1,6 @@
 import 'package:base_flutter_bloc/utils/appbar/common_appbar.dart';
 import 'package:base_flutter_bloc/utils/appbar/icon_appbar.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';
-import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppbar {
@@ -23,7 +22,6 @@ class HomeAppbar {
           onMenuPressed?.call();
         },
         image: leadingIcon,
-        color: themeOf().iconColor,
       ),
       title: title != null
           ? Text(

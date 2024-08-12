@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/bloc/app_bloc.dart';
@@ -38,8 +37,6 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
 
   Function()? get onCustomBackPress => null;
 
-  StackRouter get router => AutoRouter.of(context);
-
   Widget? get customAppBar => null;
 
   Widget? get customBottomNavigationBar => null;
@@ -47,6 +44,14 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
   Widget? get customDrawer => null;
 
   Color? get customScaffoldColor => null;
+
+  bool get canPop => false;
+
+  bool get customBackPressed => false;
+
+  bool get enableBackPressed => true;
+
+  NavigatorState get router => Navigator.of(context);
 
   @override
   void initState() {
@@ -56,21 +61,6 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       onReady();
     });
-    if (backButtonInterceptorRoute != null) {
-      BackButtonInterceptor.add(customBackInterceptor);
-    }
-  }
-
-  Future<bool> customBackInterceptor(
-      bool stopDefaultButtonEvent, RouteInfo routeInfo) async {
-    if (routeInfo.currentRoute(context)?.settings.name ==
-        backButtonInterceptorRoute?.routeName) {
-      onCustomBackPress?.call();
-      return true;
-    } else {
-      router.back();
-      return true;
-    }
   }
 
   void onResume() {}
@@ -92,10 +82,21 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
     }
   }
 
+  bool isDrawerOpen() {
+    return _scaffoldKey.currentState?.isDrawerOpen ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<B>(
-        create: (BuildContext context) => getBloc, child: getCustomScaffold());
+      create: (BuildContext context) => getBloc,
+      child: enableBackPressed
+          ? PopScope(
+              canPop: canPop,
+              onPopInvoked: (didPop) => onBackPressed(didPop, context),
+              child: getCustomScaffold())
+          : getCustomScaffold(),
+    );
   }
 
   void openDrawer() {
@@ -138,6 +139,7 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
     Function(BaseState state)? onLoadingPerform,
     required Function(BaseState state) onDataReturn,
     Function(BaseState previousState, BaseState currentState)? returnWhen,
+    Function(BaseState previousState, BaseState currentState)? performWhen,
     required Function(BaseState state) onDataPerform,
     Function(BaseState state)? onErrorReturn,
     Function(BaseState state)? onErrorPerform,
@@ -153,7 +155,9 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
           switch (state) {
             case InitialState():
               return (onInitialReturn == null)
-                  ? const Center(child: Text('No Data'))
+                  ? Container(
+                      color: primaryColor,
+                    )
                   : onInitialReturn(state);
             case LoadingState():
               return (onLoadingReturn == null)
@@ -175,6 +179,11 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
                 child: Center(child: Text('Unexpected Data State')),
               );
           }
+        },
+        listenWhen: (previousState, currentState) {
+          return (performWhen != null)
+              ? performWhen(previousState, currentState)
+              : true;
         },
         listener: (BuildContext context, state) {
           switch (state) {
@@ -243,7 +252,14 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
   @override
   void dispose() {
     getBloc.close();
-    BackButtonInterceptor.remove(customBackInterceptor);
     super.dispose();
+  }
+
+  void onBackPressed(bool didPop, BuildContext context) {
+    if (!customBackPressed) {
+      if (!didPop) {
+        router.pop();
+      }
+    }
   }
 }

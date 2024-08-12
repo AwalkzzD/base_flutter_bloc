@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:another_flushbar/flushbar.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 /// to get main navigator key
@@ -12,6 +9,13 @@ final GlobalKey<NavigatorState> globalNavigatorKey =
 final BuildContext globalContext = globalNavigatorKey.currentState!.context;
 
 showToast(String message) {
+  /*ScaffoldMessenger.of(globalContext).showSnackBar(
+      SnackBar(
+        content: Text(message,
+            maxLines: 3, style: const TextStyle(color: Colors.white)),
+        duration: const Duration(seconds: 3),
+      ),
+      snackBarAnimationStyle: AnimationStyle());*/
   Flushbar(
     margin: const EdgeInsets.all(10.0),
     borderRadius: BorderRadius.circular(10.0),
@@ -22,25 +26,4 @@ showToast(String message) {
     messageText:
         Text(message, maxLines: 3, style: const TextStyle(color: Colors.white)),
   ).show(globalContext);
-}
-
-void printNavigationStack(BuildContext context) {
-  final stack = AutoRouter.of(context).stack.reversed.toList();
-  final buffer = StringBuffer();
-
-  buffer.writeln();
-  buffer.writeln(
-      '--------------------------Navigation Stack--------------------------');
-  buffer.writeln();
-
-  for (int i = 0; i < stack.length; i++) {
-    final indent = ' ' * (i + 1) * 2;
-    buffer.writeln('$indent|_ ${stack[i].name}');
-  }
-
-  buffer.writeln();
-  buffer.writeln(
-      '--------------------------Navigation Stack--------------------------');
-
-  log(buffer.toString());
 }

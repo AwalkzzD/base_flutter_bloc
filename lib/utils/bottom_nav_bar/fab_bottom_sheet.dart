@@ -2,7 +2,7 @@ import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:base_flutter_bloc/utils/dropdown/dropdown_option_model.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/widgets/content_area_widget.dart';
 import 'package:flutter/material.dart';
 

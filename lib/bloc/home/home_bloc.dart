@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
+  @override
   RequestProperties? requestProperties;
 
+  @override
   RequestProperties? getRequestPropertiesData() {
     if (requestProperties != null) {
       return requestProperties;
@@ -22,20 +24,24 @@ class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
     }
   }
 
+  @override
   bool? isOtherUser() {
     return isUserParent() == false &&
         isUserStudent() == false &&
         isUserTeacher() == false;
   }
 
+  @override
   bool? isUserParent() {
     return getRequestPropertiesData()?.isUserParent();
   }
 
+  @override
   bool? isUserTeacher() {
     return getRequestPropertiesData()?.isUserTeacher();
   }
 
+  @override
   bool? isUserStudent() {
     return getRequestPropertiesData()?.isUserStudent();
   }
@@ -78,20 +84,7 @@ class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
       ];
 
   List<Widget> studentScreens() => [
-        KeepAlivePage(
-            child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('Home Screen'),
-              ElevatedButton(onPressed: () {}, child: const Text('Dark Theme')),
-              ElevatedButton(
-                  onPressed: () {}, child: const Text('Light Theme')),
-              TextButton(onPressed: () {}, child: const Text('Pop')),
-              TextButton(onPressed: () {}, child: const Text('Show Stack')),
-            ],
-          ),
-        )),
+        Container(color: Colors.greenAccent),
         KeepAlivePage(child: Container(color: green)),
         KeepAlivePage(child: Container(color: black)),
         KeepAlivePage(child: Container(color: red)),

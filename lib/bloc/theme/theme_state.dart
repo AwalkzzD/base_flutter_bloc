@@ -23,7 +23,9 @@ class ThemeState {
             buttonColor: Colors.blue,
             splashColor: Colors.black),
         appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF121212),
           elevation: 0.0,
+          iconTheme: IconThemeData(color: Colors.white),
           systemOverlayStyle: SystemUiOverlayStyle(
               statusBarColor: Colors.white,
               statusBarIconBrightness: Brightness.light,
@@ -51,6 +53,8 @@ class ThemeState {
             splashColor: Colors.white),
         appBarTheme: const AppBarTheme(
             elevation: 0.0,
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Color(0xFF121212)),
             systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: Colors.white,
                 statusBarIconBrightness: Brightness.dark,

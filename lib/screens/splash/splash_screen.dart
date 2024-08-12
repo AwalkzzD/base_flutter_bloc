@@ -1,5 +1,4 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:base_flutter_bloc/base/routes/router/app_router.gr.dart';
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/splash/splash_bloc.dart';
 import 'package:base_flutter_bloc/bloc/splash/splash_bloc_event.dart';
@@ -10,7 +9,9 @@ import 'package:base_flutter_bloc/utils/stream_helper/common_enums.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 
-@RoutePage()
+import '../../base/routes/router_utils/custom_route_arguments.dart';
+
+// @RoutePage()
 class SplashScreen extends BasePage {
   const SplashScreen({super.key});
 
@@ -59,18 +60,37 @@ class _SplashScreenState extends BasePageState<SplashScreen, SplashBloc> {
       switch (state.data) {
         case bool isLoggeddIn:
           if (isLoggeddIn) {
-            _delayedNavigation(HomeRoute(fromScreen: ScreenType.splash));
+            // _delayedNavigation(HomeRoute(fromScreen: ScreenType.splash));
+            _delayedNavigation(
+                route: AppRouter.homeRoute, screenType: ScreenType.splash);
           } else {
             showToast('Please login to continue.');
-            _delayedNavigation(const LoginRoute());
+            _delayedNavigation(route: AppRouter.loginRoute);
+            // _delayedNavigation(const LoginRoute());
           }
       }
     });
   }
 
-  void _delayedNavigation(PageRouteInfo route) async {
+  void _delayedNavigation({
+    required String route,
+    ScreenType? screenType,
+  }) async {
     await Future.delayed(const Duration(seconds: 1), () {
-      router.replace(route);
+      router.pushReplacementNamed(route,
+          arguments: CustomRouteArguments(
+            screenType: screenType ?? ScreenType.normal,
+          ));
+
+      /*router.pushNamedAndRemoveUntil(route, (route) => false,
+          arguments: CustomRouteArguments(
+            screenType: screenType ?? ScreenType.normal,
+          ));*/
+
+      /*Navigator.pushReplacementNamed(globalContext, route,
+          arguments: CustomRouteArguments(
+            screenType: screenType ?? ScreenType.normal,
+          ));*/
     });
   }
 

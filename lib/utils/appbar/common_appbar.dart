@@ -1,8 +1,6 @@
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
-import 'package:base_flutter_bloc/utils/screen_utils/flutter_screenutil.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CommonAppBar(
@@ -54,7 +52,8 @@ class CommonAppBar extends StatelessWidget implements PreferredSizeWidget {
                       offset: const Offset(0, 4),
                     ),
                   ],
-            color: backgroundColor ?? themeOf().appBarColor),
+            color: backgroundColor ??
+                Theme.of(context).appBarTheme.backgroundColor),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
