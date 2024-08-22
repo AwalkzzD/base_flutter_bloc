@@ -14,8 +14,7 @@ import 'package:base_flutter_bloc/utils/enum_to_string/enum_to_string.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/settings_utils.dart';
 import 'package:collection/collection.dart';
 
-Future<InitUserResponse?> initUserAPI(Function(InitUserResponse) onSuccess,
-    Function(ErrorResponse) onError) async {
+Future<InitUserResponse?> initUserAPI(Function(ErrorResponse) onError) async {
   /// common variables
   String? companyId;
   String? activePeriod;

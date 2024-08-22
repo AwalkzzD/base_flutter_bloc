@@ -5,6 +5,7 @@ import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/bloc/theme/theme_bloc.dart';
+import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/constants/app_colors.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,8 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
 
   NavigatorState get router => Navigator.of(context);
 
+  NavigatorState get globalRouter => Navigator.of(globalContext);
+
   @override
   void initState() {
     super.initState();
@@ -99,13 +102,9 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
     );
   }
 
-  void openDrawer() {
-    _scaffoldKey.currentState?.openDrawer();
-  }
+  void openDrawer() => _scaffoldKey.currentState?.openDrawer();
 
-  void closeDrawer() {
-    _scaffoldKey.currentState?.closeDrawer();
-  }
+  void closeDrawer() => _scaffoldKey.currentState?.closeDrawer();
 
   Widget getCustomScaffold() {
     return getScaffold();
@@ -231,17 +230,21 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
         });
   }
 
-  showLoader() {
+  showCustomLoader() {
     context.loaderOverlay.show(widgetBuilder: (_) {
       return Container(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Center(
-            child: CircularProgressIndicator(
-                color: Theme.of(context)
-                    .progressIndicatorTheme
-                    .circularTrackColor)),
+          child: CircularProgressIndicator(
+              color:
+                  Theme.of(context).progressIndicatorTheme.circularTrackColor),
+        ),
       );
     });
+  }
+
+  showLoader() {
+    context.loaderOverlay.show();
   }
 
   hideLoader() {

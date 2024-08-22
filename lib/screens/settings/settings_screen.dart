@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc_event.dart';
-import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,6 +15,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../base/routes/router/app_router.dart';
 import '../../bloc/theme/theme_bloc_event.dart';
+import '../../remote/utils/api_endpoints.dart';
 import '../../utils/appbar/back_button_appbar.dart';
 import '../../utils/common_utils/shared_pref.dart';
 import '../../utils/constants/app_images.dart';
@@ -53,6 +55,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
 
   @override
   Widget buildWidget(BuildContext context) {
+    log('Settings Build');
     return Column(
       children: [
         Expanded(
@@ -97,9 +100,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         settingTile(
             AppImages.icLicense, "settings_screen.label_license_and_terms".tr(),
             () async {
-          await launchUrl(
-            Uri.parse(ApiEndpoints.licenseAndTerms),
-          );
+          await launchUrl(Uri.parse(ApiEndpoints.licenseAndTerms));
         }),
         settingTile(
             AppImages.icContactUs, "settings_screen.label_contact_us".tr(), () {

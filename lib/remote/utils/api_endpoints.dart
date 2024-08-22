@@ -65,7 +65,7 @@ class ApiEndpoints {
   static const String terminologies = "/api/terminologies";
 
   /// calender
-  static const String calender = "/api/events/calendar";
+  static const String calendar = "/api/events/calendar";
 
   /// sessions
   static const String sessionTasks = "/api/sessions/tasks";

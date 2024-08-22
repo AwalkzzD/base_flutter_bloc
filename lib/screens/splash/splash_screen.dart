@@ -79,7 +79,7 @@ class _SplashScreenState extends BasePageState<SplashScreen, SplashBloc> {
     await Future.delayed(const Duration(seconds: 1), () {
       router.pushReplacementNamed(route,
           arguments: CustomRouteArguments(
-            screenType: screenType ?? ScreenType.normal,
+            fromScreen: screenType ?? ScreenType.normal,
           ));
 
       /*router.pushNamedAndRemoveUntil(route, (route) => false,

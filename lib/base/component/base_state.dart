@@ -3,8 +3,9 @@ import 'package:equatable/equatable.dart';
 abstract class BaseState<T> extends Equatable {
   final T? data;
   final String? errorMessage;
+  final Function()? onRetry;
 
-  const BaseState({this.data, this.errorMessage});
+  const BaseState({this.data, this.errorMessage, this.onRetry});
 
   @override
   List<Object?> get props => [];
@@ -24,4 +25,9 @@ class DataState<T> extends BaseState {
 
 class ErrorState extends BaseState {
   const ErrorState(String errorMsg) : super(data: null, errorMessage: errorMsg);
+}
+
+class ErrorRetryState extends BaseState {
+  const ErrorRetryState(String errorMsg, Function()? onRetry)
+      : super(errorMessage: errorMsg, onRetry: onRetry);
 }

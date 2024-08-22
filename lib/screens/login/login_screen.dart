@@ -151,7 +151,7 @@ class _LoginScreenState extends BasePageState<LoginScreen, LoginBloc> {
 
   void navigateToNextScreen() {
     router.pushReplacementNamed(AppRouter.homeRoute,
-        arguments: CustomRouteArguments(screenType: ScreenType.login));
+        arguments: CustomRouteArguments(fromScreen: ScreenType.login));
     /*Navigator.pushReplacementNamed(context, AppRouter.homeRoute,
         arguments: ScreenType.login);*/
   }

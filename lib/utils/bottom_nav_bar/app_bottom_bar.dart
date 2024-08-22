@@ -5,7 +5,6 @@ import 'package:base_flutter_bloc/utils/bottom_nav_bar/r_nav_item.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/r_nav_n_sheet.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';
-import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:base_flutter_bloc/utils/dropdown/dropdown_option_model.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/menu_utils.dart';
 import 'package:base_flutter_bloc/utils/widgets/common_widgets.dart';
@@ -75,7 +74,8 @@ class _AppBottomBarState extends State<AppBottomBar> {
       initialSelectedIndex: widget.initialSelectedIndex,
       sheet: buildPopUpSheet(),
       backgroundGradient: getCommonGradient(),
-      backgroundColor: themeOf().bottomBarColor,
+      backgroundColor:
+          Theme.of(context).bottomNavigationBarTheme.backgroundColor,
       onSheetToggle: (v) {
         setState(() {
           //_open = v;

@@ -14,7 +14,7 @@ class ThemeState {
         primaryColor: primaryColor,
         hintColor: hintTextColor,
         disabledColor: Colors.grey,
-        cardColor: Colors.white,
+        cardTheme: const CardTheme(color: Color(0xFF121212)),
         canvasColor: Colors.white,
         brightness: Brightness.dark,
         buttonTheme: ButtonThemeData(
@@ -24,6 +24,8 @@ class ThemeState {
             splashColor: Colors.black),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: Colors.white, circularTrackColor: Colors.white),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Color(0xFF1F1F1F)),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF121212),
           elevation: 0.0,
@@ -42,8 +44,10 @@ class ThemeState {
         primaryColor: primaryColor,
         hintColor: hintTextColor,
         disabledColor: Colors.grey,
-        cardColor: Colors.white,
+        cardTheme: const CardTheme(color: white),
         canvasColor: Colors.white,
+        bottomNavigationBarTheme:
+            const BottomNavigationBarThemeData(backgroundColor: Colors.white),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.black,
           selectionColor: Colors.black.withOpacity(0.4),

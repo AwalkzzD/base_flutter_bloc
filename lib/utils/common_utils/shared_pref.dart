@@ -250,3 +250,22 @@ void setNameSetting(bool? flag) {
 bool getNameSetting() {
   return SpUtil.getBool(keyNameSetting, defValue: false);
 }
+
+/// Dashboard Elements
+void saveDashboardElements(String? code) {
+  SpUtil.putString(keyDashboardElements, code);
+}
+
+String getDashboardElements() {
+  return SpUtil.getString(keyDashboardElements);
+}
+
+/// Calendar Type
+void saveCalendarViewType(String viewType) {
+  SpUtil.putString(keyCalendarViewType, viewType);
+}
+
+String getCalendarViewType() {
+  String viewType = SpUtil.getString(keyCalendarViewType);
+  return viewType;
+}

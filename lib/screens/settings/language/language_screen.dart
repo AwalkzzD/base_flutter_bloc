@@ -103,7 +103,7 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
         changeLanguage(getBloc.selectedLanguage?.languageCode ?? "en-GB");
         router.pushNamedAndRemoveUntil(
             AppRouter.homeRoute,
-            arguments: CustomRouteArguments(screenType: ScreenType.language),
+            arguments: CustomRouteArguments(fromScreen: ScreenType.language),
             (route) => false);
       },
       child: Container(

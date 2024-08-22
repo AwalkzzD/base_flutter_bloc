@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/remote/utils/api_endpoints.dart';
 import 'package:cryptography/cryptography.dart' as crypto;
+import 'package:flutter/material.dart';
+
+import '../common_utils/app_widgets.dart';
+import '../common_utils/shared_pref.dart';
 
 class AuthorizationResult {
   String codeVerifier;
@@ -59,6 +64,13 @@ Future<String> toCodeChallenge(String codeVerifier) async {
       .encode((await sha256.hash(ascii.encode(codeVerifier))).bytes)
       .replaceAll('=', '');
   return codeChallenge;
+}
+
+Future<void> doLogout() async {
+  await sharedPrefClear();
+  if (!globalContext.mounted) return;
+  Navigator.of(globalContext)
+      .pushNamedAndRemoveUntil(AppRouter.loginRoute, (route) => false);
 }
 
 Uri createLogoutRequest(String? token) {

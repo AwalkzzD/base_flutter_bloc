@@ -17,9 +17,10 @@ class ScreenUtilInit extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (_, BoxConstraints constraints) {
       if (constraints.maxWidth != 0) {
-        final Orientation orientation = constraints.maxWidth > constraints.maxHeight
-            ? Orientation.landscape
-            : Orientation.portrait;
+        final Orientation orientation =
+            constraints.maxWidth > constraints.maxHeight
+                ? Orientation.landscape
+                : Orientation.portrait;
         ScreenUtil.init(
           constraints,
           orientation: orientation,

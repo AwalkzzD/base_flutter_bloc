@@ -1,4 +1,5 @@
 import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
+import 'package:base_flutter_bloc/screens/dashboard/dashboard_screen.dart';
 import 'package:base_flutter_bloc/screens/home/home_screen.dart';
 import 'package:base_flutter_bloc/screens/login/login_screen.dart';
 import 'package:base_flutter_bloc/screens/settings/language/language_screen.dart';
@@ -28,7 +29,7 @@ class AppRouter {
     switch (settings.name) {
       /// Home Screen Route
       case homeRoute:
-        return buildRoute(screen: HomeScreen(fromScreen: arguments.screenType));
+        return buildRoute(screen: HomeScreen(fromScreen: arguments.fromScreen));
 
       /// Login Screen Route
       case loginRoute:
@@ -51,6 +52,10 @@ class AppRouter {
       /// Language Screen Route
       case languageRoute:
         return buildRoute(screen: const LanguageScreen());
+
+      /// Dashboard Screen Route
+      case dashboardRoute:
+        return buildRoute(screen: const DashboardScreen());
 
       /// Default Route
       default:
@@ -98,4 +103,5 @@ class AppRouter {
   static const String appDrawerRoute = '/appDrawer';
   static const String settingsRoute = '/settings';
   static const String languageRoute = '/language';
+  static const String dashboardRoute = '/dashboard';
 }

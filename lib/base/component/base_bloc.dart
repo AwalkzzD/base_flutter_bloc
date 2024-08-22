@@ -23,21 +23,12 @@ abstract class BaseBloc<E extends BaseEvent, S extends BaseState>
     return getRequestPropertiesData()?.entityId;
   }
 
-  bool? isOtherUser() {
-    return isUserParent() == false &&
-        isUserStudent() == false &&
-        isUserTeacher() == false;
-  }
+  bool? get isOtherUser =>
+      isUserParent == false && isUserStudent == false && isUserTeacher == false;
 
-  bool? isUserParent() {
-    return getRequestPropertiesData()?.isUserParent();
-  }
+  bool? get isUserParent => getRequestPropertiesData()?.isUserParent();
 
-  bool? isUserTeacher() {
-    return getRequestPropertiesData()?.isUserTeacher();
-  }
+  bool? get isUserTeacher => getRequestPropertiesData()?.isUserTeacher();
 
-  bool? isUserStudent() {
-    return getRequestPropertiesData()?.isUserStudent();
-  }
+  bool? get isUserStudent => getRequestPropertiesData()?.isUserStudent();
 }

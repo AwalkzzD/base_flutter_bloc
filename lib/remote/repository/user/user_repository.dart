@@ -113,4 +113,19 @@ class UserRepository extends RemoteRepository {
       onSuccess(success);
     });
   }
+
+  /*Future<void> apiApplicationSettings(
+    List<SettingsValue> settingValues,
+    Function(SuccessResponse<List<AppSettingsResponse>>) onSuccess,
+    Function(ErrorResponse) onError,
+  ) async {
+    Map<String, dynamic>? data = {
+      "names": settingValues
+          .map((value) => value.toString().split('.').last)
+          .toList()
+          .join(','),
+    };
+    final response = await dataSource
+        .makeRequest<List<AppSettingsResponse>>(GetUserProfileRequest());
+  }*/
 }

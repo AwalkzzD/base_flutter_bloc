@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/bloc/theme/theme_bloc.dart';
@@ -10,13 +12,14 @@ import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
+import 'package:base_flutter_bloc/utils/localization/localization_json_asset_loader.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
+import 'package:base_flutter_bloc/utils/widgets/dialogs/overlay_custom_loader.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-import 'utils/localization/localization_json_asset_loader.dart';
 import 'utils/localization/localization_utils.dart';
 
 Future<void> main() async {
@@ -70,7 +73,13 @@ class _MyAppState extends State<MyApp> {
           return previousThemeState.themeData != currentThemeState.themeData;
         },
         builder: (context, themeState) {
+          log('Building Theme App');
           return GlobalLoaderOverlay(
+            overlayColor: Colors.transparent,
+            useDefaultLoading: false,
+            overlayWidgetBuilder: (progress) {
+              return const OverlayCustomLoader();
+            },
             child: ScreenUtilInit(
               designSize: const Size(390, 844),
               builder: () => MaterialApp(

@@ -10,7 +10,6 @@ import 'package:base_flutter_bloc/remote/utils/oauth_dio.dart';
 import 'package:base_flutter_bloc/utils/auth/auth_utils.dart';
 import 'package:base_flutter_bloc/utils/auth/user_common_api.dart';
 import 'package:base_flutter_bloc/utils/auth/user_init_api.dart';
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
   AuthorizationResult? authorizationResult;
@@ -24,7 +23,6 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
         /// LoadLoginPageEvent
         case LoadLoginPageEvent loadLoginPageEvent:
           emit(const LoadingState());
-          log('Loading Login Page');
           await LoginProvider.loginRepository.apiCreateAuthorizationRequest(
               (response) {
             authorizationResult = response.data;
@@ -47,7 +45,9 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
         /// InitUserApiLoginEvent
         case InitUserApiLoginEvent initUserApiLoginEvent:
           emit(const LoadingState());
-          final response = await initUserAPI((response) {}, (error) {});
+          final response = await initUserAPI((error) {
+            emit(const ErrorState('Something went wrong!'));
+          });
           if (response == null) {
             emit(const ErrorState('Something went wrong!'));
           } else {
@@ -85,7 +85,7 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
               emit(const ErrorState('Something went wrong!'));
             }
           }, onError: (error) {
-            print(error.toString());
+            log(error.toString());
           });
 
         /// DoLoginEvent
@@ -98,6 +98,6 @@ class LoginBloc extends BaseBloc<LoginBlocEvent, BaseState> {
             emit(ErrorState((error).errorMsg));
           });
       }
-    }, transformer: sequential());
+    });
   }
 }

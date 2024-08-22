@@ -1,4 +1,5 @@
 import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
+import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/utils/drawer/app_drawer_bloc.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
@@ -13,6 +14,7 @@ import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
+import 'package:base_flutter_bloc/utils/stream_helper/common_enums.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/menu_utils.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:base_flutter_bloc/utils/widgets/strings_utils.dart';
@@ -20,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../auth/auth_utils.dart';
 import '../constants/app_styles.dart';
 import '../widgets/terminologies_utils.dart';
 
@@ -85,8 +88,12 @@ class _AppDrawerWidgetState
       saveAcademicPeriod(academicPeriodResponse);
       if (!globalContext.mounted) return;
 
-      /*Navigator.pop(globalContext);
-      Navigator.of(globalContext)
+      globalRouter.pop();
+      // Navigator.pop(globalContext);
+
+      globalRouter.pushReplacementNamed(AppRouter.homeRoute,
+          arguments: CustomRouteArguments(fromScreen: ScreenType.drawer));
+      /*Navigator.of(globalContext)
           .pushReplacement(HomeScreen.route(screenType: ScreenType.Drawer));*/
     }
   }
@@ -361,7 +368,7 @@ class _AppDrawerWidgetState
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: getBloc.isUserTeacher() == true
+                children: getBloc.isUserTeacher == true
                     ? drawerTeacherOptionsWidgets()
                     : drawerStudentsOptionsWidgets(),
               ),
@@ -551,6 +558,7 @@ class _AppDrawerWidgetState
 
   void logout() {
     showLoader();
+    doLogout();
     /*apiNotificationUnRegister((response){
       getBloc().hideLoadingDialog();
       doLogout();

@@ -55,10 +55,16 @@ dependencies:
   back_button_interceptor: ^7.0.3
   flutter_svg: ^2.0.10+1
   cached_network_image: ^3.4.0
-  bloc_concurrency: ^0.2.5
+
   easy_localization: ^3.0.7
   flutter_switch: ^0.3.2
   url_launcher: ^6.3.0
+  firebase_messaging: ^15.0.4
+  persistent_header_adaptive: ^2.1.0
+  file_picker: ^8.0.0+1
+  syncfusion_flutter_calendar: ^26.2.10
+  hexcolor: ^3.0.1
+  dropdown_button2: ^2.3.9
 
 #dependency_overrides:
 #  webview_flutter_android: 3.16.1
