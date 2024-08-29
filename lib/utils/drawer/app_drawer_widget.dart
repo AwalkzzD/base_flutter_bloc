@@ -36,8 +36,6 @@ class AppDrawerWidget extends BasePage {
       _AppDrawerWidgetState();
 }
 
-/// ---------------------------------------------------------------------------------------------
-
 class _AppDrawerWidgetState
     extends BasePageState<AppDrawerWidget, AppDrawerBloc> {
   final AppDrawerBloc _bloc = AppDrawerBloc();
@@ -412,8 +410,8 @@ class _AppDrawerWidgetState
       menuUtils.isAnnouncementsMenu()
           ? drawerTileWidget(string("announcements.label_announcements"),
               AppImages.icOpAnnouncement, () {
-              /*Navigator.pop(context);
-        Navigator.of(context).push(AnnouncementsScreen.route());*/
+              widget.closeDrawerFunc();
+              router.pushNamed(AppRouter.announcementsRoute);
             })
           : const SizedBox(),
       /*menuUtils.isCalenderMenu() ? drawerTileWidget(string("common_labels.label_calendar"), AppImages.icOpCalendar, () {
@@ -468,8 +466,8 @@ class _AppDrawerWidgetState
       }),
       drawerTileWidget(
           string("about_us.label_about_app"), AppImages.icOpAboutUs, () {
-        /*Navigator.pop(context);
-        Navigator.push(context, AboutUsScreen.route(true));*/
+        widget.closeDrawerFunc();
+        router.pushNamed(AppRouter.aboutUsRoute);
       }),
       /*drawerTileWidget(string('help_resource.title_help_resource'), AppImages.icOpHelpResources, () {
         Navigator.pop(context);
@@ -484,8 +482,8 @@ class _AppDrawerWidgetState
       menuUtils.isAnnouncementsMenu()
           ? drawerTileWidget(string("announcements.label_announcements"),
               AppImages.icOpAnnouncement, () {
-              /*Navigator.pop(context);
-        Navigator.of(context).push(AnnouncementsScreen.route());*/
+              widget.closeDrawerFunc;
+              router.pushNamed(AppRouter.announcementsRoute);
             })
           : const SizedBox(),
       menuUtils.isTimeTableMenu()
@@ -517,8 +515,8 @@ class _AppDrawerWidgetState
       }),
       drawerTileWidget(
           string("about_us.label_about_app"), AppImages.icOpAboutUs, () {
-        // Navigator.pop(context);
-        // Navigator.push(context, AboutUsScreen.route(true));
+        widget.closeDrawerFunc();
+        router.pushNamed(AppRouter.aboutUsRoute);
       }),
       /*drawerTileWidget(string('help_resource.title_help_resource'), AppImages.icOpHelpResources, () {
             Navigator.pop(context);

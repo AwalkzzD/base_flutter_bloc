@@ -1,4 +1,7 @@
 import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
+import 'package:base_flutter_bloc/screens/about_us/about_us_screen.dart';
+import 'package:base_flutter_bloc/screens/announcements/announcements_screen.dart';
+import 'package:base_flutter_bloc/screens/contact_us/contact_us_screen.dart';
 import 'package:base_flutter_bloc/screens/dashboard/dashboard_screen.dart';
 import 'package:base_flutter_bloc/screens/home/home_screen.dart';
 import 'package:base_flutter_bloc/screens/login/login_screen.dart';
@@ -57,6 +60,19 @@ class AppRouter {
       case dashboardRoute:
         return buildRoute(screen: const DashboardScreen());
 
+      /// About Us Screen Route
+      case aboutUsRoute:
+        return buildRoute(
+            screen: AboutUsScreen(fromRoute: arguments.fromRoute));
+
+      /// Announcements Screen Route
+      case announcementsRoute:
+        return buildRoute(screen: const AnnouncementsScreen());
+
+      /// Contact Us Screen Route
+      case contactUsRoute:
+        return buildRoute(screen: const ContactUsScreen());
+
       /// Default Route
       default:
         return buildRoute(screen: const SplashScreen());
@@ -104,4 +120,7 @@ class AppRouter {
   static const String settingsRoute = '/settings';
   static const String languageRoute = '/language';
   static const String dashboardRoute = '/dashboard';
+  static const String aboutUsRoute = '/about_us';
+  static const String announcementsRoute = '/announcements';
+  static const String contactUsRoute = '/contact_us';
 }

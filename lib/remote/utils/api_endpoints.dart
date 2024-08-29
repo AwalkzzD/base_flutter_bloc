@@ -193,7 +193,15 @@ class ApiEndpoints {
   static const String paymentsBarcode = "/api/barcodes/students/(";
   static const String payments = ")/payments";
 
-  // car details
-  static String getCarManufacturers = '/getallmanufacturers';
-  static String getCarMakes = '/getallmakes';
+  /// social media pages
+  static const String infoContactPhone = "+30 2510 242632";
+  static const String infoContactEmail = "info@classter.com";
+  static const String infoFbPageApp = "fb://page/208158912648105";
+  static const String infoFbPageWeb = "https://www.facebook.com/ClassterPage/";
+  static const String infoTwitterApp = "twitter://user?user_id=4557030377";
+  static const String infoTwitterWeb = "https://twitter.com/ClassterCom";
+  static const String infoYoutubeWeb =
+      "https://www.youtube.com/channel/UC_ECo2Of69Zz2NZaxtFzWHg";
+  static const String infoLinkedInWeb =
+      "https://www.linkedin.com/company/classter";
 }

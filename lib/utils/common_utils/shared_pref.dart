@@ -9,6 +9,8 @@ import 'package:base_flutter_bloc/remote/repository/user/response/user_response.
 import 'package:base_flutter_bloc/utils/auth/request_properties.dart';
 import 'package:base_flutter_bloc/utils/common_utils/sp_util.dart';
 
+import '../auth/user_claim_helper.dart';
+
 const String keyScaleFactor = "scaleFactor";
 const String keyThemeMode = "theme";
 const String keyTerminologies = "terminologies";
@@ -268,4 +270,23 @@ void saveCalendarViewType(String viewType) {
 String getCalendarViewType() {
   String viewType = SpUtil.getString(keyCalendarViewType);
   return viewType;
+}
+
+String getUsernameById(int userIdArgs) {
+  RequestProperties? properties = getRequestProperties();
+  UserTypes? userTypes = properties?.userType;
+
+  if (userTypes == UserTypes.Teacher || userTypes == UserTypes.Student) {
+    if (properties?.userId == userIdArgs) {
+      return properties?.userName ?? '';
+    }
+  } else if (userTypes == UserTypes.Parent) {
+    var studentList = getStudentList();
+    for (var element in studentList) {
+      if (element.id != null && element.id == userIdArgs) {
+        return element.fullName ?? '';
+      }
+    }
+  }
+  return '';
 }

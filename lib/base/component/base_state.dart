@@ -4,8 +4,10 @@ abstract class BaseState<T> extends Equatable {
   final T? data;
   final String? errorMessage;
   final Function()? onRetry;
+  final String? emptyDataMessage;
 
-  const BaseState({this.data, this.errorMessage, this.onRetry});
+  const BaseState(
+      {this.data, this.errorMessage, this.onRetry, this.emptyDataMessage});
 
   @override
   List<Object?> get props => [];
@@ -30,4 +32,9 @@ class ErrorState extends BaseState {
 class ErrorRetryState extends BaseState {
   const ErrorRetryState(String errorMsg, Function()? onRetry)
       : super(errorMessage: errorMsg, onRetry: onRetry);
+}
+
+class EmptyDataState extends BaseState {
+  const EmptyDataState(String emptyDataMessage)
+      : super(emptyDataMessage: emptyDataMessage);
 }

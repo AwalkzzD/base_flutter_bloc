@@ -152,27 +152,27 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
         },
         builder: (BuildContext context, state) {
           switch (state) {
-            case InitialState():
+            case InitialState initialState:
               return (onInitialReturn == null)
-                  ? Container(
-                      color: primaryColor,
-                    )
-                  : onInitialReturn(state);
-            case LoadingState():
+                  ? Container(color: primaryColor)
+                  : onInitialReturn(initialState);
+            case LoadingState loadingState:
               return (onLoadingReturn == null)
                   ? const Center(child: CircularProgressIndicator())
-                  : onLoadingReturn(state);
-            case DataState():
-              return onDataReturn(state);
-            case ErrorState():
+                  : onLoadingReturn(loadingState);
+            case DataState dataState:
+              return onDataReturn(dataState);
+            case ErrorState errorState:
               return (onErrorReturn == null)
                   ? Center(
                       child: SizedBox(
-                        child:
-                            Text(state.errorMessage ?? 'Something went wrong!'),
+                        child: Text(
+                            errorState.errorMessage ?? 'Something went wrong!'),
                       ),
                     )
-                  : onErrorReturn(state);
+                  : onErrorReturn(errorState);
+
+            case EmptyDataState emptyDataState:
             default:
               return const SizedBox(
                 child: Center(child: Text('Unexpected Data State')),

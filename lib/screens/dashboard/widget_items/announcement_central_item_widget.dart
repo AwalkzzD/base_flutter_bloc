@@ -1,7 +1,7 @@
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
-import '../../../remote/repository/announcement_central/response/detail/announcement_detail_response.dart';
+import '../../../remote/repository/announcements/announcement_central/response/detail/announcement_detail_response.dart';
 import '../../../utils/common_utils/common_utils.dart';
 import '../../../utils/constants/app_styles.dart';
 import '../../../utils/constants/app_theme.dart';

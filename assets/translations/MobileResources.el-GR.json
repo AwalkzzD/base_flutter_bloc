@@ -132,7 +132,6 @@
     "label_type_here": "Πληκτρολογήστε εδώ...",
     "label_about_me": "Σχετικά με εμένα",
     "label_preferred_contact_method": "Προτεινόμενος Τρόπος Επικοινωνίας",
-    "label_contact_information": "Στοιχεία Επικοινωνίας",
     "label_address": "Διεύθυνση",
     "label_city": "Πόλη",
     "label_post_code": "Ταχυδρομικός Κωδικός",
@@ -166,8 +165,9 @@
     "label_subject": "Μάθημα",
     "message_create_folder": "Δημιουργία Νέου Φακέλου για μετακίνηση μηνύματος.",
     "message_move_in_folder": "Επιλογή Φακέλου ή Δημιουργία Νέου Φακέλου για μετακίνηση μηνύματος.",
-    "label_file_size_over_the_limit": "Ένα ή παραπάνω αρχεία είναι πάνω από 2,5MB",
-    "label_total_file_size_over_the_limit": "Τα αρχεία δεν μπορούν να ξεπερνούν τα 10MB",
+    "label_file_size_over_the_limit": "Ένα ή παραπάνω αρχεία είναι πάνω από {size}",
+    "label_total_file_size_over_the_limit": "Τα αρχεία δεν μπορούν να ξεπερνούν τα {size}",
+    "label_draft": "Draft",
     "label_inbox": "Εισερχόμενα",
     "label_sent": "Απεσταλμένα",
     "label_archived": "Αρχειοθετημένα",
@@ -251,8 +251,7 @@
     "label_student_bus_usage_title": "Παρακαλώ επιλέξτε αν ο {student} θα χρησιμοποιήσει το λεωφορείο για τη διαδρομή",
     "label_from_home_to_edu": "Από το σπίτι προς το εκπαιδευτικό ίδρυμα",
     "label_from_edu_to_edu": "Από το εκπαιδευτικό ίδρυμα προς το σπίτι",
-    "information_message_file": "Παρακαλώ σημειώστε ότι δεν μπορείτε να ανεβάσετε αρχεία που υπερβαίνουν το όριο των 12,5MB συνολικά. Δεν μπορείτε επίσης να ανεβάσετε περισσότερα από 5 αρχεία.",
-    "information_message_file_size": "Παρακαλώ σημειώστε ότι δεν μπορείτε να ανεβάσετε αρχεία που υπερβαίνουν το όριο των 12,5MB συνολικά.",
+    "information_message_file_size": "Παρακαλώ σημειώστε ότι δεν μπορείτε να ανεβάσετε αρχεία που υπερβαίνουν το όριο των {size} συνολικά.",
     "information_message_file_length": "Παρακαλούμε σημειώστε ότι δεν μπορείτε να ανεβάσετε πάνω από 5 αρχεία συνολικά."
   },
   "navigation_preference": {
@@ -280,7 +279,6 @@
     "warning_non_mandatory_update": "Μια νέα έκδοση του Classter είναι διαθέσιμη. Παρακαλούμε πραγματοποιήστε την τελευταία αναβάθμιση για μια καλύτερη εμπειρία.",
     "warning_force_update": "Νέα Διαθέσιμη Αναβάθμιση! Παρακαλούμε πραγματοποιήστε την τελευταία αναβάθμιση και επανεκκινήστε την Εφαρμογή.",
     "warning_assignment_hint": "Καταγράψτε οποιαδήποτε σημαντική παρατήρηση για την απουσία",
-    "warning_upload_info": "Παρακαλώ σημειώστε ότι δεν μπορείτε να ανεβάσετε αρχεία που υπερβαίνουν το όριο των 25MB ανά αρχείο.",
     "warning_academic_period": "Η Ακαδημαϊκή Περίοδος δεν είναι διαθέσιμη",
     "warning_empty_subjects" : "Δε βρέθηκαν {subjects}",
     "warning_empty_teachers" : "Δε βρέθηκαν {teachers}"
@@ -459,6 +457,8 @@
     "label_teachers": "Καθηγητές",
     "label_consents": "Συναινέσεις",
     "label_tardy": "Αργοπορημένη προσέλευση",
+    "label_contact_data": "Contact Details",
+    "label_financial_data": "Financial",
     "label_authorized_absence": "Δικαιολογημένες",
     "label_unauthorized_absence": "Αδικαιολόγητες"
   }

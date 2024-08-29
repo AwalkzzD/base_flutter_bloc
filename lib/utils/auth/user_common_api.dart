@@ -66,6 +66,7 @@ Future<void> getUserAcademicPeriods(
     Function(ErrorResponse) onError) async {
   await UserProvider.userRepository.apiGetAcademicPeriods(instituteId, period,
       (academicPeriods, paginateData) {
+    saveAcademicPeriodList(academicPeriods.data);
     if (academicPeriods.data.isEmpty) {
       onSuccess([]);
     } else {

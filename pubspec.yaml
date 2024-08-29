@@ -65,6 +65,8 @@ dependencies:
   syncfusion_flutter_calendar: ^26.2.10
   hexcolor: ^3.0.1
   dropdown_button2: ^2.3.9
+  popover: ^0.3.0
+  flutter_widget_from_html: ^0.15.2
 
 #dependency_overrides:
 #  webview_flutter_android: 3.16.1

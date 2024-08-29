@@ -1,9 +1,9 @@
 import 'package:base_flutter_bloc/base/network/src_network.dart';
-import 'package:base_flutter_bloc/remote/repository/announcement_central/request/get_announcements_central_request.dart';
-import 'package:base_flutter_bloc/remote/repository/announcement_central/response/detail/announcement_detail_response.dart';
+import 'package:base_flutter_bloc/remote/repository/announcements/announcement_central/request/get_announcements_central_request.dart';
+import 'package:base_flutter_bloc/remote/repository/announcements/announcement_central/response/detail/announcement_detail_response.dart';
 
-import '../../../utils/remote/pagination_data.dart';
-import '../../../utils/remote/pagination_utils.dart';
+import '../../../../utils/remote/pagination_data.dart';
+import '../../../../utils/remote/pagination_utils.dart';
 
 class AnnouncementCentralRepository extends RemoteRepository {
   AnnouncementCentralRepository(super.remoteDataSource);

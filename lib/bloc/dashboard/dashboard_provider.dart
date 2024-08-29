@@ -1,6 +1,5 @@
-import 'package:base_flutter_bloc/remote/repository/announcement_central/announcement_central_repository.dart';
-
 import '../../base/network/api_client/base_client.dart';
+import '../../remote/repository/announcements/announcement_central/announcement_central_repository.dart';
 
 class DashboardProvider {
   DashboardProvider._();

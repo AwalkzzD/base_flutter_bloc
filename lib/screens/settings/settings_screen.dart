@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
 import 'package:base_flutter_bloc/base/page/base_page.dart';
+import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_bloc_event.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
@@ -47,15 +46,12 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
 
   @override
   Widget? get customAppBar => AppBarBackButton.build(
-      onBackPressed: () {
-        Navigator.pop(context);
-      },
+      onBackPressed: () => router.pop(),
       title: string("settings_screen.label_settings"),
       trailing: []);
 
   @override
   Widget buildWidget(BuildContext context) {
-    log('Settings Build');
     return Column(
       children: [
         Expanded(
@@ -87,7 +83,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         settingTile(
             AppImages.icLanguage, "settings_screen.label_app_language".tr(),
             () {
-          Navigator.pushNamed(context, AppRouter.languageRoute);
+          router.pushNamed(AppRouter.languageRoute);
         }),
         settingTile(AppImages.icNavigation,
             "settings_screen.label_navigation_preferences".tr(), () {
@@ -95,7 +91,8 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         }),
         settingTile(AppImages.icAboutUs, "settings_screen.label_about_us".tr(),
             () {
-          // Navigator.push(context, AboutUsScreen.route(false));
+          router.pushNamed(AppRouter.aboutUsRoute,
+              arguments: CustomRouteArguments(fromRoute: false));
         }),
         settingTile(
             AppImages.icLicense, "settings_screen.label_license_and_terms".tr(),
@@ -104,7 +101,7 @@ class _SettingsScreenState extends BasePageState<SettingsScreen, SettingsBloc> {
         }),
         settingTile(
             AppImages.icContactUs, "settings_screen.label_contact_us".tr(), () {
-          /*Navigator.push(context, ContactUsScreen.route());*/
+          router.pushNamed(AppRouter.contactUsRoute);
         }),
         /*settingTile(AppImages.icChangePassword,
             "settings_screen.label_change_password".tr(), () {}),*/

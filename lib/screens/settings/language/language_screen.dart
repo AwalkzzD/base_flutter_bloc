@@ -51,10 +51,7 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
 
   @override
   Widget? get customAppBar => AppBarBackButton.build(
-        onBackPressed: () {
-          /*router.back();*/
-          Navigator.pop(context);
-        },
+        onBackPressed: () => router.pop(),
         title: string("settings_screen.label_app_language"),
       );
 
@@ -115,7 +112,7 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
             borderRadius: BorderRadius.circular(5)),
         width: MediaQuery.of(context).size.width,
         child: Text(
-          string('label.label_submit'),
+          string('common_labels.label_submit'),
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 16.sp,

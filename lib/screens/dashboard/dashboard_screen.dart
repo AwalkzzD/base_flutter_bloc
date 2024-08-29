@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/dashboard/dashboard_bloc.dart';
 import 'package:base_flutter_bloc/bloc/dashboard/dashboard_bloc_event.dart';
@@ -14,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_header_adaptive/persistent_header_adaptive.dart';
 
-import '../../remote/repository/announcement_central/response/detail/announcement_detail_response.dart';
+import '../../remote/repository/announcements/announcement_central/response/detail/announcement_detail_response.dart';
 import '../../remote/repository/consents/response/consents_student_response.dart';
 import '../../remote/repository/user/response/student_relative_extended.dart';
 import '../../utils/common_utils/common_utils.dart';
@@ -58,7 +56,6 @@ class _DashboardScreenState
 
   @override
   Widget buildWidget(BuildContext context) {
-    log('Dashboard Build');
     return CustomScrollView(slivers: [
       AdaptiveHeightSliverPersistentHeader(
         floating: true,
@@ -151,12 +148,12 @@ class _DashboardScreenState
                   key: ValueKey(snapshot.data?.id),
                   child: PlanScreen(studentId: snapshot.data?.id));
             })
-        : KeepAlivePage(child: Container());
+        : const KeepAlivePage(child: PlanScreen());
   }
 
   Widget buildToDoScreen() {
     return homeBloc.isUserTeacher == true
-        ? KeepAlivePage(child: Container())
+        ? const KeepAlivePage(child: TodoScreen())
         : StreamBuilder<StudentForRelativeExtended?>(
             stream: homeBloc.selectedStudent.stream,
             builder: (context, snapshot) {

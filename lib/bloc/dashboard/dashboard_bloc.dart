@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/dashboard/dashboard_bloc_event.dart';
 import 'package:base_flutter_bloc/bloc/dashboard/dashboard_provider.dart';
@@ -7,8 +5,8 @@ import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../base/network/response/error/error_response.dart';
-import '../../remote/repository/announcement_central/request/utils/announcements_central_list_request_params.dart';
-import '../../remote/repository/announcement_central/response/detail/announcement_detail_response.dart';
+import '../../remote/repository/announcements/announcement_central/request/utils/announcements_central_list_request_params.dart';
+import '../../remote/repository/announcements/announcement_central/response/detail/announcement_detail_response.dart';
 import '../../utils/remote/pagination_data.dart';
 import '../../utils/remote/pagination_utils.dart';
 
@@ -44,7 +42,6 @@ class DashboardBloc extends BaseBloc<DashboardBlocEvent, BaseState> {
     required Function(List<AnnouncementDetailResponse>) onSuccess,
     required Function(ErrorResponse) onError,
   }) async {
-    log('--------------------------------------------- Calling loadAnnouncementsCentral Api ---------------------------------------------');
     if (!isPagination && !isPullToRefresh) {
       pageData = getPaginationHeader(null);
     }

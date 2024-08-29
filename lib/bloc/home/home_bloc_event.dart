@@ -12,3 +12,9 @@ class SetSelectedStudentEvent extends HomeBlocEvent {
 
   SetSelectedStudentEvent({required this.studentForRelativeExtended});
 }
+
+class LoadQrSettingsEvent extends HomeBlocEvent {}
+
+class LoadTerminologyEvent extends HomeBlocEvent {}
+
+class CheckConsentsEvent extends HomeBlocEvent {}

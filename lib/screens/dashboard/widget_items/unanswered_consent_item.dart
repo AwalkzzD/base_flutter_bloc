@@ -2,7 +2,10 @@ import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../../remote/repository/consents/response/consents_student_response.dart';
+import '../../../utils/common_utils/shared_pref.dart';
+import '../../../utils/constants/app_styles.dart';
 import '../../../utils/constants/app_theme.dart';
+import '../../../utils/widgets/bullet_view.dart';
 
 class UnansweredConsentItem extends StatelessWidget {
   final int userId;
@@ -30,9 +33,9 @@ class UnansweredConsentItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /*Text(getUsernameById(userId),
+            Text(getUsernameById(userId),
                 style: styleSmall3Medium.copyWith(
-                    color: themeOf().textPrimaryColor)),*/
+                    color: themeOf().textPrimaryColor)),
             Padding(
               padding: EdgeInsetsDirectional.only(start: 10.h),
               child: ListView.builder(
@@ -48,8 +51,14 @@ class UnansweredConsentItem extends StatelessWidget {
                       padding: EdgeInsetsDirectional.fromSTEB(0, 4.h, 0, 4.h),
                       child: Row(
                         children: [
-                          /*BulletView(height: 10.h, width: 10.h),*/
-                          Text(consent.description ?? '')
+                          BulletView(height: 10.h, width: 10.h),
+                          Flexible(
+                            child: Text(consent.description ?? '',
+                                style: styleSmall2SemiBold.copyWith(
+                                  color: themeOf().textAccentColor,
+                                  decoration: TextDecoration.underline,
+                                )),
+                          )
                         ],
                       ),
                     ),

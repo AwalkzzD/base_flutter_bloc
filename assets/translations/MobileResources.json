@@ -132,7 +132,6 @@
     "label_type_here": "Type Here...",
     "label_about_me": "About Me",
     "label_preferred_contact_method": "Preferred Contact Method",
-    "label_contact_information": "Contact Information",
     "label_address": "Address",
     "label_city": "City",
     "label_post_code": "Post Code",
@@ -166,8 +165,9 @@
     "label_subject": "Subject",
     "message_create_folder": "Create New Folder to move message.",
     "message_move_in_folder": "Select Folder or Create New Folder to move message.",
-    "label_file_size_over_the_limit": "One or more files are larger than 2.5MB",
-    "label_total_file_size_over_the_limit": "Attachments cannot exceed 15 MB",
+    "label_file_size_over_the_limit": "One or more files are larger than {size}",
+    "label_total_file_size_over_the_limit": "Attachments cannot exceed {size}",
+    "label_draft": "Draft",
     "label_inbox": "Inbox",
     "label_sent": "Sent",
     "label_archived": "Archived",
@@ -251,8 +251,7 @@
     "label_student_bus_usage_title": "Please select if {student} will use the bus for the route",
     "label_from_home_to_edu": "From home to the Educational Institution",
     "label_from_edu_to_edu": "From the Educational Institution to home",
-    "information_message_file": "Please note that you cannot upload files that exceed the limit of 12.5 MB in total. Also you cannot upload more than 5 files in total.",
-    "information_message_file_size": "Please note that you cannot upload files that exceed the limit of 12.5 MB in total.",
+    "information_message_file_size": "Please note that you cannot upload files that exceed the limit of {size} in total.",
     "information_message_file_length": "Please note that you cannot upload more than 5 files in total."
   },
   "navigation_preference": {
@@ -280,7 +279,6 @@
     "warning_non_mandatory_update": "A new version of classter is available.Please update to latest version for better experience",
     "warning_force_update": "New Version is available!.Please update to the latest version and restart the App.",
     "warning_assignment_hint": "Give any important remark for the absence",
-    "warning_upload_info": "Please note that you cannot upload files that exceed the limit of 25MB per file.",
     "warning_academic_period" : "Academic Periods is not available",
     "warning_empty_subjects" : "No {subjects} found",
     "warning_empty_teachers" : "No {teachers} found"
@@ -459,6 +457,8 @@
     "label_teachers": "Teachers",
     "label_consents": "Consents",
     "label_tardy": "Late",
+    "label_contact_data": "Contact Details",
+    "label_financial_data": "Financial",
     "label_authorized_absence": "Authorized",
     "label_unauthorized_absence": "Unauthorized"
   }

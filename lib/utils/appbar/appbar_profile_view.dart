@@ -7,8 +7,10 @@ import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:flutter/material.dart';
+import 'package:popover/popover.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../widgets/student_list_popover_widget.dart';
 import 'icon_appbar.dart';
 
 class AppBarButtonProfileView extends StatelessWidget {
@@ -27,19 +29,22 @@ class AppBarButtonProfileView extends StatelessWidget {
         onClick: (context) async {
           if (requestProperties != null) {
             if (requestProperties.userType == UserTypes.Parent) {
-              /*final result = await showPopover(
+              final result = await showPopover(
                 backgroundColor: themeOf().appBarColor,
                 context: context,
-                bodyBuilder: (context) => {},
-                onPop: () {
-
-                },
+                bodyBuilder: (context) => StudentListPopoverWidget(
+                    student: student,
+                    onStudentClick: onStudentClick,
+                    studentsList: studentsList ?? getStudentList()),
+                onPop: () {},
                 width: ScreenUtil().screenWidth - 26,
               );
-              if(result==null){
+              if (result == null) {
                 //SystemChrome.setSystemUIOverlayStyle(themeOf().uiOverlayStyleCommon());
-              }*/
-            } else {}
+              }
+            } else {
+              // todo: router.push(AppRouter.profileRoute)
+            }
           }
         },
         icon: StreamBuilder<StudentForRelativeExtended?>(

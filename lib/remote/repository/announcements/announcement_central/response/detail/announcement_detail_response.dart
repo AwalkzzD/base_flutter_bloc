@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../utils/files/file_element.dart';
+import '../../../../utils/files/file_element.dart';
 import '../event_category.dart';
 import '../online_meeting.dart';
 
