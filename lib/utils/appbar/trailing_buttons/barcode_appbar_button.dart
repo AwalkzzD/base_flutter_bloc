@@ -1,4 +1,4 @@
-import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/utils/appbar/icon_appbar.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/constants/app_images.dart';

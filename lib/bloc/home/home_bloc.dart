@@ -1,5 +1,5 @@
 import 'package:base_flutter_bloc/base/src_bloc.dart';
-import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/bloc/home/home_bloc_event.dart';
 import 'package:base_flutter_bloc/bloc/settings/settings_provider.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_relative_extended.dart';

@@ -1,9 +1,9 @@
 import 'package:base_flutter_bloc/base/src_bloc.dart';
-import 'package:base_flutter_bloc/bloc/announcements/read/read_announcements_bloc.dart';
+import 'package:base_flutter_bloc/bloc/announcements/unread/unread_announcements_bloc.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
-import '../../../bloc/announcements/read/read_announcements_bloc_event.dart';
+import '../../../bloc/announcements/unread/unread_announcements_bloc_event.dart';
 import '../../../remote/repository/announcements/announcement_central/response/announcements_list_response.dart';
 import '../../../utils/constants/app_styles.dart';
 import '../../../utils/constants/app_theme.dart';
@@ -12,17 +12,17 @@ import '../../../utils/paginable/widgets/paginate_error_widget.dart';
 import '../../../utils/paginable/widgets/paginate_loading_indicator.dart';
 import '../widget/announcement_detail_item_widget.dart';
 
-class ReadTabWidget extends BasePage {
-  const ReadTabWidget({super.key});
+class UnreadTabWidget extends BasePage {
+  const UnreadTabWidget({super.key});
 
   @override
   BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
-      _ReadTabWidgetState();
+      _UnreadTabWidgetState();
 }
 
-class _ReadTabWidgetState
-    extends BasePageState<ReadTabWidget, ReadAnnouncementsBloc> {
-  final ReadAnnouncementsBloc _bloc = ReadAnnouncementsBloc();
+class _UnreadTabWidgetState
+    extends BasePageState<UnreadTabWidget, UnreadAnnouncementsBloc> {
+  final UnreadAnnouncementsBloc _bloc = UnreadAnnouncementsBloc();
 
   @override
   bool get enableBackPressed => false;
@@ -79,5 +79,5 @@ class _ReadTabWidgetState
   }
 
   @override
-  ReadAnnouncementsBloc get getBloc => _bloc;
+  UnreadAnnouncementsBloc get getBloc => _bloc;
 }

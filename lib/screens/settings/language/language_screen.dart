@@ -25,12 +25,8 @@ import '../../../utils/widgets/image_view.dart';
 class LanguageScreen extends BasePage {
   const LanguageScreen({super.key});
 
-  /*static Route<dynamic> route() {
-    return CustomPageRoute(builder: (context) => const LanguageScreen());
-  }*/
-
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _LanguageScreenState();
 }
 
@@ -117,7 +113,7 @@ class _LanguageScreenState extends BasePageState<LanguageScreen, LanguageBloc> {
           style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
-              fontFamily: fontFamilyRoboto,
+              fontFamily: fontFamilyPoppins,
               color: white),
         ),
       ),

@@ -3,11 +3,12 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
-import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/bloc/theme/theme_bloc.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/constants/app_colors.dart';
 import 'package:base_flutter_bloc/utils/constants/app_theme.dart';
+import 'package:base_flutter_bloc/utils/widgets/gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,9 +18,9 @@ abstract class BasePage extends StatefulWidget {
   const BasePage({super.key});
 
   @override
-  BasePageState createState() => getState();
+  BasePageState createState() => getState;
 
-  BasePageState getState();
+  BasePageState get getState;
 }
 
 abstract class BasePageState<T extends BasePage, B extends BaseBloc>
@@ -27,6 +28,8 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
   final bool _isPaused = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<RefreshIndicatorState> _refreshKey =
+      GlobalKey<RefreshIndicatorState>();
 
   B get getBloc;
 
@@ -55,6 +58,10 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
   NavigatorState get router => Navigator.of(context);
 
   NavigatorState get globalRouter => Navigator.of(globalContext);
+
+  void showRefreshIndicator() {
+    _refreshKey.currentState?.show();
+  }
 
   @override
   void initState() {
@@ -118,10 +125,41 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
       drawer: customDrawer,
       appBar: customAppBar as PreferredSizeWidget?,
       bottomNavigationBar: customBottomNavigationBar,
-      body: BlocProvider<B>(
-          create: (BuildContext context) => getBloc,
-          child: buildWidget(context)),
+      body: getBaseView(context),
     );
+  }
+
+  Widget? customBaseView(BuildContext context) {
+    return null;
+  }
+
+  bool get isRefreshEnable => false;
+
+  Widget baseRefreshIndicator(Widget child) {
+    return RefreshIndicator(
+      key: _refreshKey,
+      onRefresh: onRefresh,
+      child: child,
+    );
+  }
+
+  Future<void> onRefresh() {
+    return Future.value(null);
+  }
+
+  Widget getBaseView(BuildContext context) {
+    return customBaseView(context) ??
+        SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: isRefreshEnable
+              ? baseRefreshIndicator(BlocProvider<B>(
+                  create: (BuildContext context) => getBloc,
+                  child: buildWidget(context)))
+              : BlocProvider<B>(
+                  create: (BuildContext context) => getBloc,
+                  child: buildWidget(context)),
+        );
   }
 
   SystemUiOverlayStyle getSystemUIOverlayStyle() {
@@ -173,6 +211,18 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
                   : onErrorReturn(errorState);
 
             case EmptyDataState emptyDataState:
+              return const SizedBox();
+            case ErrorRetryState errorRetryState:
+              return Column(
+                children: [
+                  Text(errorRetryState.errorMessage ?? 'Something went wrong!'),
+                  GradientButton(
+                      onPressed: () {
+                        errorRetryState.onRetry?.call();
+                      },
+                      child: const Text('Retry'))
+                ],
+              );
             default:
               return const SizedBox(
                 child: Center(child: Text('Unexpected Data State')),
@@ -185,6 +235,7 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
               : true;
         },
         listener: (BuildContext context, state) {
+          log(state.data.toString());
           switch (state) {
             case InitialState():
               (onInitialReturn == null)

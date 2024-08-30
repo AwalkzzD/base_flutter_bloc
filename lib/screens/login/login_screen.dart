@@ -22,7 +22,7 @@ class LoginScreen extends BasePage {
   const LoginScreen({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _LoginScreenState();
 }
 

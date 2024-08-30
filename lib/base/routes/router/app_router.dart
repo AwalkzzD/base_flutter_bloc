@@ -5,12 +5,14 @@ import 'package:base_flutter_bloc/screens/contact_us/contact_us_screen.dart';
 import 'package:base_flutter_bloc/screens/dashboard/dashboard_screen.dart';
 import 'package:base_flutter_bloc/screens/home/home_screen.dart';
 import 'package:base_flutter_bloc/screens/login/login_screen.dart';
+import 'package:base_flutter_bloc/screens/payments_barcode/payments_barcode_screen.dart';
 import 'package:base_flutter_bloc/screens/settings/language/language_screen.dart';
 import 'package:base_flutter_bloc/screens/settings/settings_screen.dart';
 import 'package:base_flutter_bloc/screens/splash/splash_screen.dart';
-import 'package:base_flutter_bloc/utils/drawer/app_drawer_widget.dart';
 import 'package:base_flutter_bloc/utils/widgets/custom_page_route.dart';
 import 'package:flutter/material.dart';
+
+import '../../../screens/drawer/app_drawer_widget.dart';
 
 class AppRouter {
   AppRouter._();
@@ -73,6 +75,10 @@ class AppRouter {
       case contactUsRoute:
         return buildRoute(screen: const ContactUsScreen());
 
+      /// Payments Barcode Screen Route
+      case paymentsBarcodeRoute:
+        return buildRoute(screen: const PaymentsBarcodeScreen());
+
       /// Default Route
       default:
         return buildRoute(screen: const SplashScreen());
@@ -123,4 +129,5 @@ class AppRouter {
   static const String aboutUsRoute = '/about_us';
   static const String announcementsRoute = '/announcements';
   static const String contactUsRoute = '/contact_us';
+  static const String paymentsBarcodeRoute = '/payments_barcode';
 }

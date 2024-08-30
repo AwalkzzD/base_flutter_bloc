@@ -1,6 +1,6 @@
 import 'package:base_flutter_bloc/base/component/base_bloc.dart';
-import 'package:base_flutter_bloc/base/component/base_event.dart';
 import 'package:base_flutter_bloc/base/component/base_state.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc_event.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
 import 'package:base_flutter_bloc/remote/repository/terminology/response/terminology_list_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/academic_periods_response.dart';
@@ -10,10 +10,10 @@ import 'package:base_flutter_bloc/remote/repository/user/response/user_response.
 import 'package:base_flutter_bloc/utils/common_utils/shared_pref.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../remote/repository/consents/response/consents_student_response.dart';
-import '../utils/dropdown/dropdown_option_model.dart';
+import '../../remote/repository/consents/response/consents_student_response.dart';
+import '../../utils/dropdown/dropdown_option_model.dart';
 
-class AppBloc extends BaseBloc<BaseEvent, BaseState> {
+class AppBloc extends BaseBloc<AppBlocEvent, BaseState> {
   late BehaviorSubject<List<TerminologyListResponse>> terminologies;
   late BehaviorSubject<StudentForRelativeExtended?> student;
   late BehaviorSubject<List<StudentForRelativeExtended>> studentList;

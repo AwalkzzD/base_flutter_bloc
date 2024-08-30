@@ -16,7 +16,7 @@ class SplashScreen extends BasePage {
   const SplashScreen({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _SplashScreenState();
 }
 

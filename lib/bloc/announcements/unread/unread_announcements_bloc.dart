@@ -1,21 +1,22 @@
-import 'package:base_flutter_bloc/base/src_bloc.dart';
-import 'package:base_flutter_bloc/bloc/announcements/announcements_provider.dart';
-import 'package:base_flutter_bloc/bloc/announcements/read/read_announcements_bloc_event.dart';
-import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
+import 'package:base_flutter_bloc/base/component/base_bloc.dart';
+import 'package:base_flutter_bloc/bloc/announcements/unread/unread_announcements_bloc_event.dart';
 
+import '../../../base/component/base_state.dart';
 import '../../../remote/repository/announcements/announcement_central/response/announcements_list_response.dart';
 import '../../../remote/repository/announcements/announcement_main/request/utils/announcements_request_params.dart';
+import '../../../utils/common_utils/app_widgets.dart';
 import '../../../utils/remote/pagination_data.dart';
 import '../../../utils/remote/pagination_utils.dart';
+import '../announcements_provider.dart';
 
-class ReadAnnouncementsBloc extends BaseBloc {
+class UnreadAnnouncementsBloc extends BaseBloc {
   PaginationData pageData = getPaginationHeader(null);
 
   List<AnnouncementsListResponse> announcementsListBloc =
       List.empty(growable: true);
 
-  ReadAnnouncementsBloc() {
-    on<ReadAnnouncementsBlocEvent>((event, emit) async {
+  UnreadAnnouncementsBloc() {
+    on<UnreadAnnouncementsBlocEvent>((event, emit) async {
       switch (event) {
         case LoadAnnouncementsBlocEvent loadAnnouncementsBlocEvent:
           emit(const LoadingState());
@@ -50,7 +51,7 @@ class ReadAnnouncementsBloc extends BaseBloc {
     }
     AnnouncementListParameters requestParameters = AnnouncementListParameters(
       pageNumber: isPullToRefresh ? 1 : pageData.currentPage + 1,
-      isRead: true,
+      isRead: false,
     );
     // toDate: SPDateUtils.stringFormat(DateTime.now(),SPDateUtils.FORMAT_DD_MM_YYYY).toIso8601String());
     Map<String, dynamic>? data = requestParameters.toMap();

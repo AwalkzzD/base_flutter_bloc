@@ -1,5 +1,7 @@
 import 'package:base_flutter_bloc/base/src_bloc.dart';
 import 'package:base_flutter_bloc/bloc/announcements/announcements_bloc.dart';
+import 'package:base_flutter_bloc/screens/announcements/tabs/read_tab_widget.dart';
+import 'package:base_flutter_bloc/screens/announcements/tabs/unread_tab_widget.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +15,7 @@ class AnnouncementsScreen extends BasePage {
   const AnnouncementsScreen({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _AnnouncementsScreenState();
 }
 
@@ -22,10 +24,8 @@ class _AnnouncementsScreenState
   final AnnouncementsBloc _bloc = AnnouncementsBloc();
 
   List<Widget> screens = const [
-    SizedBox(),
-    SizedBox(),
-    /*UnReadWidget(),
-    ReadTabWidget(),*/
+    UnreadTabWidget(),
+    ReadTabWidget(),
   ];
 
   List<String> tabs = [

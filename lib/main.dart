@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
-import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/home/home_bloc.dart';
 import 'package:base_flutter_bloc/bloc/theme/theme_bloc.dart';
 import 'package:base_flutter_bloc/bloc/theme/theme_state.dart';
 import 'package:base_flutter_bloc/bloc/utils/bottom_bar/app_bottom_bar_bloc.dart';
@@ -38,6 +39,7 @@ Future<void> main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (BuildContext context) => AppBloc()),
+      BlocProvider(create: (BuildContext context) => HomeBloc()),
       BlocProvider(
           create: (BuildContext context) => getThemeMode()
               ? ThemeBloc(ThemeState.darkTheme)

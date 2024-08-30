@@ -3,6 +3,8 @@ import 'package:base_flutter_bloc/utils/widgets/image_view.dart';
 import 'package:base_flutter_bloc/utils/widgets/rounded_border_cached_imageview.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/app_styles.dart';
+
 extension on String {
   String initials() {
     String result = "";
@@ -19,6 +21,7 @@ extension on String {
 
 class CommonProfileView extends StatelessWidget {
   final double? height;
+  final double? maxHeight;
   final String image;
   final String text;
   final Color? backgroundColor;
@@ -27,7 +30,9 @@ class CommonProfileView extends StatelessWidget {
   final double borderWidth;
   final Color? borderColor;
   final BoxFit? boxFit;
+  final EdgeInsetsGeometry padding;
   final ImageShape? imageShape;
+  final bool autoHeight;
 
   const CommonProfileView(
       {Key? key,
@@ -36,10 +41,13 @@ class CommonProfileView extends StatelessWidget {
       this.backgroundColor,
       this.size = 30,
       this.height,
+      this.maxHeight,
       this.borderRadius = 8,
       this.borderWidth = 2,
       this.borderColor,
+      this.padding = const EdgeInsets.all(0),
       this.boxFit,
+      this.autoHeight = false,
       this.imageShape})
       : super(key: key);
 
@@ -53,7 +61,11 @@ class CommonProfileView extends StatelessWidget {
         borderWidth: borderWidth,
         borderRadius: borderRadius,
         borderColor: borderColor ?? themeOf().appBarTextColor,
+        backgroundColor: backgroundColor,
+        padding: padding,
         boxFit: boxFit,
+        autoHeight: autoHeight,
+        maxHeight: maxHeight,
         imageShape: imageShape,
       );
     } else {
@@ -64,7 +76,10 @@ class CommonProfileView extends StatelessWidget {
         child: Center(
           child: Text(
             text.initials(),
-            style: TextStyle(color: _color(), fontSize: _fontSize),
+            style: TextStyle(
+                color: _color(),
+                fontSize: _fontSize,
+                fontFamily: fontFamilyPoppins),
           ),
         ),
       );

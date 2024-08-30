@@ -11,7 +11,6 @@ import 'package:base_flutter_bloc/utils/bottom_nav_bar/app_bottom_bar.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/r_nav_item.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
 import 'package:base_flutter_bloc/utils/common_utils/common_utils.dart';
-import 'package:base_flutter_bloc/utils/drawer/app_drawer_widget.dart';
 import 'package:base_flutter_bloc/utils/screen_utils/flutter_screen_util.dart';
 import 'package:base_flutter_bloc/utils/stream_helper/common_enums.dart';
 import 'package:collection/collection.dart';
@@ -36,6 +35,7 @@ import '../../utils/screen_utils/keep_alive_widget.dart';
 import '../../utils/stream_helper/settings_utils.dart';
 import '../../utils/widgets/dialogs/consent_dialog.dart';
 import '../dashboard/dashboard_screen.dart';
+import '../drawer/app_drawer_widget.dart';
 
 class HomeScreen extends BasePage {
   final ScreenType fromScreen;
@@ -43,7 +43,7 @@ class HomeScreen extends BasePage {
   const HomeScreen({super.key, required this.fromScreen});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _HomeScreenState();
 }
 

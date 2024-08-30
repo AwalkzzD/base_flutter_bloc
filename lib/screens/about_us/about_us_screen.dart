@@ -15,7 +15,7 @@ class AboutUsScreen extends BasePage {
   const AboutUsScreen({super.key, required this.fromRoute});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _AboutUsScreenState();
 }
 

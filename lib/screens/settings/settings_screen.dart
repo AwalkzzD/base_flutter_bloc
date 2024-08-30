@@ -26,12 +26,8 @@ import '../../utils/widgets/image_view.dart';
 class SettingsScreen extends BasePage {
   const SettingsScreen({super.key});
 
-  /*static Route<dynamic> route() {
-    return CustomPageRoute(builder: (context) => const SettingsScreen());
-  }*/
-
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _SettingsScreenState();
 }
 

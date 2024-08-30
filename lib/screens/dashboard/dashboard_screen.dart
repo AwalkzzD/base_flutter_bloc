@@ -27,7 +27,7 @@ class DashboardScreen extends BasePage {
   const DashboardScreen({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _DashboardScreenState();
 }
 

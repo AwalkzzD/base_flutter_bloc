@@ -25,7 +25,7 @@ import 'package:base_flutter_bloc/utils/stream_helper/settings_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/app_bloc.dart';
+import '../../bloc/app_bloc/app_bloc.dart';
 import '../../remote/repository/consents/request/utils/consents_request.dart';
 import '../../remote/repository/consents/response/consents_student_response.dart';
 import '../common_utils/app_widgets.dart';

@@ -45,5 +45,8 @@ String gradeLiteral() => getLiteral(
 String programLiteral() => getLiteral(
     TerminologyType.Stream, false, string("common_labels.label_stream"));
 
+String consentsLiteral() => getLiteral(
+    TerminologyType.Consents, false, string("default_label.label_consents"));
+
 String locationLiteral() => getLiteral(
     TerminologyType.Location, false, string("common_labels.label_location"));

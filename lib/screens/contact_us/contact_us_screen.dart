@@ -17,7 +17,7 @@ class ContactUsScreen extends BasePage {
   const ContactUsScreen({super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _ContactUsScreenState();
 }
 

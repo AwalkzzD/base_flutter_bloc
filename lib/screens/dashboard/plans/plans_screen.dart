@@ -23,7 +23,7 @@ class PlanScreen extends BasePage {
   const PlanScreen({this.studentId, super.key});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _PlanScreenState();
 }
 

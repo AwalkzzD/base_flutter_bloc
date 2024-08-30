@@ -22,9 +22,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../auth/auth_utils.dart';
-import '../constants/app_styles.dart';
-import '../widgets/terminologies_utils.dart';
+import '../../utils/auth/auth_utils.dart';
+import '../../utils/constants/app_styles.dart';
+import '../../utils/widgets/terminologies_utils.dart';
 
 class AppDrawerWidget extends BasePage {
   final Function() closeDrawerFunc;
@@ -32,7 +32,7 @@ class AppDrawerWidget extends BasePage {
   const AppDrawerWidget({super.key, required this.closeDrawerFunc});
 
   @override
-  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> getState() =>
+  BasePageState<BasePage, BaseBloc<BaseEvent, BaseState>> get getState =>
       _AppDrawerWidgetState();
 }
 
@@ -211,146 +211,153 @@ class _AppDrawerWidgetState
           if (snapshot.hasData && snapshot.data != null) {
             InstituteResponse? companyResponse = snapshot.data;
             return Container(
-                padding: EdgeInsetsDirectional.only(
-                    start: 24.h, top: 12.h, end: 24.h),
-                margin: EdgeInsetsDirectional.only(top: 20.h),
-                decoration: BoxDecoration(
-                  color: themeOf().lightMode()
-                      ? themeOf().primaryColor.withOpacity(0.5)
-                      : themeOf().bottomBarColor,
-                ),
-                child: Padding(
-                  padding: EdgeInsetsDirectional.only(bottom: 16.h),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      CommonProfileView(
-                        image: getBase64Image(companyResponse?.image ?? ""),
-                        text: "${companyResponse?.description}",
-                        size: 40.h,
-                        borderColor: themeOf().appBarTextColor,
-                        boxFit: BoxFit.cover,
-                      ),
-                      SizedBox(
-                        width: 15.h,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${companyResponse?.description}",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: styleSmall4Regular,
-                            ),
-                            SizedBox(height: 6.h),
-                            StreamBuilder<List<AcademicPeriodResponse>>(
-                                stream: appBloc.academicPeriodList.stream,
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data != null) {
-                                    return StreamBuilder<
-                                            AcademicPeriodResponse?>(
-                                        stream: appBloc.academicPeriod.stream,
-                                        builder: (context, selectedSnapshot) {
-                                          return Container(
-                                            height: 30.h * getScaleFactor(),
-                                            decoration: BoxDecoration(
-                                              color: themeOf().lightMode()
-                                                  ? const Color(0xFFA73D40)
-                                                  : themeOf().dropdownBgColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(4),
-                                              border: Border.all(
-                                                color: themeOf().lightMode()
-                                                    ? const Color(0xFFBC7072)
-                                                    : themeOf()
-                                                        .dropdownBorderColor,
-                                              ),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 8.h),
-                                            child: DropdownButton<
-                                                AcademicPeriodResponse>(
-                                              padding: EdgeInsets.zero,
-                                              value: selectedSnapshot.data,
-                                              style: styleSmall2.copyWith(
-                                                  color: themeOf().lightMode()
-                                                      ? Colors.white
-                                                      : themeOf()
-                                                          .textPrimaryColor),
-                                              underline: Container(),
-                                              dropdownColor: themeOf()
-                                                      .lightMode()
-                                                  ? themeOf().primaryColor
-                                                  : themeOf().dropdownBgColor,
-                                              icon: ImageView(
-                                                  image: AppImages
-                                                      .icDrawerDateDropDown,
-                                                  imageType: ImageType.svg,
-                                                  width: 10.h,
-                                                  height: 6.h,
-                                                  color: Colors.white),
-                                              items: snapshot.data?.map(
-                                                  (AcademicPeriodResponse
-                                                      value) {
-                                                return DropdownMenuItem<
-                                                    AcademicPeriodResponse>(
-                                                  value: value,
-                                                  child: Container(
-                                                    margin:
-                                                        EdgeInsetsDirectional
-                                                            .only(end: 8.h),
-                                                    child: Text(
-                                                      value.description
-                                                          .toString(),
-                                                      style:
-                                                          styleSmall3MediumWhite,
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList(),
-                                              onChanged:
-                                                  (AcademicPeriodResponse?
-                                                      value) {
-                                                if (value != null) {
-                                                  setPeriod(value);
-                                                }
-                                              },
-                                              onTap: () {
-                                                // no-op
-                                              },
-                                            ),
-                                          );
-                                        });
-                                  } else {
-                                    return const SizedBox();
-                                  }
-                                }),
-                          ],
+              padding:
+                  EdgeInsetsDirectional.only(start: 24.h, top: 12.h, end: 24.h),
+              margin: EdgeInsetsDirectional.only(top: 20.h),
+              decoration: BoxDecoration(
+                color: themeOf().lightMode()
+                    ? themeOf().primaryColor.withOpacity(0.5)
+                    : themeOf().bottomBarColor,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CommonProfileView(
+                          image: getBase64Image(companyResponse?.image ?? ""),
+                          text: "${companyResponse?.description}",
+                          size: isTablet() ? 0.4.sw : 0.7.sw,
+                          autoHeight: true,
+                          maxHeight: 80.h,
+                          backgroundColor: Colors.white,
+                          borderColor: themeOf().appBarTextColor,
+                          boxFit: BoxFit.contain,
+                          padding: const EdgeInsetsDirectional.all(4),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsetsDirectional.only(start: 10.h),
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            10.h, 8.h, 0.h, 10.h),
-                        child: InkWell(
-                          onTap: () {
-                            router.pop();
-                          },
-                          child: ImageView(
-                            image: AppImages.icDrawerClose,
-                            imageType: ImageType.svg,
-                            width: 16.h,
-                            height: 16.h,
+                        SizedBox(width: 15.h),
+                        SizedBox(height: 8.h),
+                        Container(
+                          padding: EdgeInsetsDirectional.only(bottom: 16.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${companyResponse?.description}",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: styleSmall4Regular,
+                              ),
+                              SizedBox(height: 6.h),
+                              StreamBuilder<List<AcademicPeriodResponse>>(
+                                  stream: appBloc.academicPeriodList.stream,
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData &&
+                                        snapshot.data != null) {
+                                      return StreamBuilder<
+                                              AcademicPeriodResponse?>(
+                                          stream: appBloc.academicPeriod.stream,
+                                          builder: (context, selectedSnapshot) {
+                                            return Container(
+                                              height: 30.h * getScaleFactor(),
+                                              decoration: BoxDecoration(
+                                                color: themeOf().lightMode()
+                                                    ? const Color(0xFFA73D40)
+                                                    : themeOf().dropdownBgColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                border: Border.all(
+                                                  color: themeOf().lightMode()
+                                                      ? const Color(0xFFBC7072)
+                                                      : themeOf()
+                                                          .dropdownBorderColor,
+                                                ),
+                                              ),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 8.h),
+                                              child: DropdownButton<
+                                                  AcademicPeriodResponse>(
+                                                padding: EdgeInsets.zero,
+                                                value: selectedSnapshot.data,
+                                                style: styleSmall2.copyWith(
+                                                    color: themeOf().lightMode()
+                                                        ? Colors.white
+                                                        : themeOf()
+                                                            .textPrimaryColor),
+                                                underline: Container(),
+                                                dropdownColor: themeOf()
+                                                        .lightMode()
+                                                    ? themeOf().primaryColor
+                                                    : themeOf().dropdownBgColor,
+                                                icon: ImageView(
+                                                    image: AppImages
+                                                        .icDrawerDateDropDown,
+                                                    imageType: ImageType.svg,
+                                                    width: 10.h,
+                                                    height: 6.h,
+                                                    color: Colors.white),
+                                                items: snapshot.data?.map(
+                                                    (AcademicPeriodResponse
+                                                        value) {
+                                                  return DropdownMenuItem<
+                                                      AcademicPeriodResponse>(
+                                                    value: value,
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsetsDirectional
+                                                              .only(end: 8.h),
+                                                      child: Text(
+                                                        value.description
+                                                            .toString(),
+                                                        style:
+                                                            styleSmall3MediumWhite,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }).toList(),
+                                                onChanged:
+                                                    (AcademicPeriodResponse?
+                                                        value) {
+                                                  if (value != null) {
+                                                    setPeriod(value);
+                                                  }
+                                                },
+                                                onTap: () {
+                                                  // no-op
+                                                },
+                                              ),
+                                            );
+                                          });
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }),
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
-                ));
+                  Container(
+                    margin: EdgeInsetsDirectional.only(start: 16.h),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(10.h, 8.h, 0.h, 10.h),
+                    child: InkWell(
+                      onTap: () => router.pop(),
+                      child: ImageView(
+                        image: AppImages.icDrawerClose,
+                        imageType: ImageType.svg,
+                        width: 16.h,
+                        height: 16.h,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
           } else {
             return const SizedBox();
           }
@@ -455,8 +462,8 @@ class _AppDrawerWidgetState
       menuUtils.isPaymentBarcodeMenu()
           ? drawerTileWidget(string('payments_barcode.label_payments_barcode'),
               AppImages.icBarcode, () {
-              /*Navigator.pop(context);
-        Navigator.push(context, PaymentsBarcodeScreen.route());*/
+              widget.closeDrawerFunc();
+              router.pushNamed(AppRouter.paymentsBarcodeRoute);
             })
           : const SizedBox(),
       drawerTileWidget(
@@ -504,8 +511,8 @@ class _AppDrawerWidgetState
       menuUtils.isPaymentBarcodeMenu()
           ? drawerTileWidget(string('payments_barcode.label_payments_barcode'),
               AppImages.icBarcode, () {
-              // Navigator.pop(context);
-              // Navigator.push(context, PaymentsBarcodeScreen.route());
+              widget.closeDrawerFunc();
+              router.pushNamed(AppRouter.paymentsBarcodeRoute);
             })
           : const SizedBox(),
       drawerTileWidget(

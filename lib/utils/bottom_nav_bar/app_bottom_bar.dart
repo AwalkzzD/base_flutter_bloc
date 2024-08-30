@@ -1,4 +1,4 @@
-import 'package:base_flutter_bloc/bloc/app_bloc.dart';
+import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/remote/repository/settings/response/mobile_license_menu.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/fab_bottom_sheet.dart';
 import 'package:base_flutter_bloc/utils/bottom_nav_bar/r_nav_item.dart';
