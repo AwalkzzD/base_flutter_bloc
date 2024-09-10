@@ -45,7 +45,7 @@ class BaseClient extends BaseDataSource<BaseRequest> {
   }) async {
     try {
       Options options = Options(
-        contentType: "application/json",
+        contentType: request.contentType,
         headers: request.header,
         method: request.httpMethod.name,
         receiveDataWhenStatusError: true,

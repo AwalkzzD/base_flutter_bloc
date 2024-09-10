@@ -9,10 +9,11 @@ import 'package:base_flutter_bloc/remote/repository/user/response/academic_perio
 import 'package:base_flutter_bloc/remote/repository/user/response/institute_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_educational_program_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/student_of_relative_response.dart';
-import 'package:base_flutter_bloc/remote/repository/user/response/user_profile_response.dart';
 import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
 import 'package:base_flutter_bloc/utils/remote/pagination_data.dart';
 import 'package:base_flutter_bloc/utils/remote/pagination_utils.dart';
+
+import '../profile/response/user_profile_response.dart';
 
 class UserRepository extends RemoteRepository {
   UserRepository(super.remoteDataSource);
@@ -114,7 +115,7 @@ class UserRepository extends RemoteRepository {
     });
   }
 
-  /*Future<void> apiApplicationSettings(
+/*Future<void> apiApplicationSettings(
     List<SettingsValue> settingValues,
     Function(SuccessResponse<List<AppSettingsResponse>>) onSuccess,
     Function(ErrorResponse) onError,

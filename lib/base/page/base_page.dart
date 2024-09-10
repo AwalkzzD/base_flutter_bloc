@@ -225,7 +225,7 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
               );
             default:
               return const SizedBox(
-                child: Center(child: Text('Unexpected Data State')),
+                child: Center(child: Text('Unexpected Error!')),
               );
           }
         },
@@ -245,7 +245,12 @@ abstract class BasePageState<T extends BasePage, B extends BaseBloc>
               (onLoadingPerform == null)
                   ? log('Loading Data')
                   : onLoadingPerform(state);
+            case OverlayLoadingState overlayLoadingState:
+              overlayLoadingState.showCustomOverlay
+                  ? showCustomLoader()
+                  : showLoader();
             case DataState():
+              hideLoader();
               onDataPerform(state);
             case ErrorState():
               (onErrorPerform == null)

@@ -1,11 +1,17 @@
 import 'package:base_flutter_bloc/base/routes/router_utils/custom_route_arguments.dart';
 import 'package:base_flutter_bloc/screens/about_us/about_us_screen.dart';
 import 'package:base_flutter_bloc/screens/announcements/announcements_screen.dart';
+import 'package:base_flutter_bloc/screens/cards/cards_screen.dart';
 import 'package:base_flutter_bloc/screens/contact_us/contact_us_screen.dart';
 import 'package:base_flutter_bloc/screens/dashboard/dashboard_screen.dart';
+import 'package:base_flutter_bloc/screens/full_image_viewer/image_full_screen.dart';
 import 'package:base_flutter_bloc/screens/home/home_screen.dart';
+import 'package:base_flutter_bloc/screens/learning/learning_screen.dart';
+import 'package:base_flutter_bloc/screens/learning/subject/subject_screen.dart';
 import 'package:base_flutter_bloc/screens/login/login_screen.dart';
 import 'package:base_flutter_bloc/screens/payments_barcode/payments_barcode_screen.dart';
+import 'package:base_flutter_bloc/screens/profile/contact_info/contact_info_screen.dart';
+import 'package:base_flutter_bloc/screens/profile/profile_screen.dart';
 import 'package:base_flutter_bloc/screens/settings/language/language_screen.dart';
 import 'package:base_flutter_bloc/screens/settings/settings_screen.dart';
 import 'package:base_flutter_bloc/screens/splash/splash_screen.dart';
@@ -79,6 +85,40 @@ class AppRouter {
       case paymentsBarcodeRoute:
         return buildRoute(screen: const PaymentsBarcodeScreen());
 
+      /// Profile Screen Route
+      case profileRoute:
+        return buildRoute(screen: const ProfileScreen());
+
+      /// Contact Info Screen Route
+      case contactInfoRoute:
+        return buildRoute(
+            screen: ContactInfoScreen(profile: arguments.profile));
+
+      /// Cards Screen Route
+      case cardsRoute:
+        return buildRoute(screen: const CardsScreen());
+
+      /// Qr Image Screen Route
+      case qrImageRoute:
+        return buildRoute(
+            screen: ImageFullScreen(
+          value: arguments.qrImageScreenValue ?? '',
+          title: arguments.qrImageScreenTitle ?? '',
+        ));
+
+      /// Learning Screen Route
+      case learningRoute:
+        return buildRoute(screen: const LearningScreen());
+
+      /// Subject Screen Route
+      case subjectRoute:
+        return buildRoute(
+          screen: SubjectScreen(
+            studentId: arguments.studentId,
+            periodId: arguments.periodId,
+          ),
+        );
+
       /// Default Route
       default:
         return buildRoute(screen: const SplashScreen());
@@ -130,4 +170,10 @@ class AppRouter {
   static const String announcementsRoute = '/announcements';
   static const String contactUsRoute = '/contact_us';
   static const String paymentsBarcodeRoute = '/payments_barcode';
+  static const String profileRoute = '/profile';
+  static const String contactInfoRoute = '/contact_info';
+  static const String cardsRoute = '/cards';
+  static const String qrImageRoute = '/qr_image_screen';
+  static const String learningRoute = '/learning';
+  static const String subjectRoute = '/subject';
 }

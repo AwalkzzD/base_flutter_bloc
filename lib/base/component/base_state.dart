@@ -6,8 +6,12 @@ abstract class BaseState<T> extends Equatable {
   final Function()? onRetry;
   final String? emptyDataMessage;
 
-  const BaseState(
-      {this.data, this.errorMessage, this.onRetry, this.emptyDataMessage});
+  const BaseState({
+    this.data,
+    this.errorMessage,
+    this.onRetry,
+    this.emptyDataMessage,
+  });
 
   @override
   List<Object?> get props => [];
@@ -19,6 +23,13 @@ class InitialState extends BaseState {
 
 class LoadingState extends BaseState {
   const LoadingState() : super(data: null, errorMessage: null);
+}
+
+class OverlayLoadingState extends BaseState {
+  final bool showCustomOverlay;
+
+  const OverlayLoadingState({this.showCustomOverlay = false})
+      : super(data: null, errorMessage: null);
 }
 
 class DataState<T> extends BaseState {

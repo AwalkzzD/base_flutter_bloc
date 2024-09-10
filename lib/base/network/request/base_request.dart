@@ -6,6 +6,8 @@ abstract class BaseRequest {
   final String? token;
   final String endPoint;
   final HttpMethod httpMethod;
+  final String contentType;
+  final String? periodId;
 
   Map<String, String>? get header => {
         "Content-Type": "application/json",
@@ -14,9 +16,11 @@ abstract class BaseRequest {
         "X-Institute-Tenant": ((getRequestProperties() == null)
             ? ''
             : getRequestProperties()!.instituteId),
-        "X-Institute-Period": ((getRequestProperties() == null)
-            ? ''
-            : getRequestProperties()!.periodCode),
+        "X-Institute-Period": (periodId == null)
+            ? ((getRequestProperties() == null)
+                ? ''
+                : getRequestProperties()!.periodCode)
+            : periodId!,
       };
 
   Map<String, dynamic> get queryParameters => {};
@@ -29,15 +33,16 @@ abstract class BaseRequest {
 
   final dynamic Function(dynamic)? decoder;
 
-  BaseRequest({
-    required this.endPoint,
-    this.httpMethod = HttpMethod.GET,
-    this.token,
-    this.decoder,
-    this.body,
-    this.receiveTimeout,
-    this.sendTimeout,
-    this.responseType = ResponseType.plain,
-    this.options,
-  });
+  BaseRequest(
+      {required this.endPoint,
+      this.httpMethod = HttpMethod.GET,
+      this.token,
+      this.decoder,
+      this.body,
+      this.receiveTimeout,
+      this.sendTimeout,
+      this.responseType = ResponseType.plain,
+      this.periodId,
+      this.options,
+      this.contentType = "application/json"});
 }

@@ -36,6 +36,7 @@ import '../../utils/stream_helper/settings_utils.dart';
 import '../../utils/widgets/dialogs/consent_dialog.dart';
 import '../dashboard/dashboard_screen.dart';
 import '../drawer/app_drawer_widget.dart';
+import '../learning/learning_screen.dart';
 
 class HomeScreen extends BasePage {
   final ScreenType fromScreen;
@@ -85,7 +86,7 @@ class _HomeScreenState extends BasePageState<HomeScreen, HomeBloc> {
               }
             },
             onDataPerform: (state) {}),
-        KeepAlivePage(child: Container(color: green)),
+        KeepAlivePage(child: LearningScreen(key: ObjectKey(getLanguage()))),
         KeepAlivePage(child: Container(color: black)),
         KeepAlivePage(child: Container(color: red)),
       ];

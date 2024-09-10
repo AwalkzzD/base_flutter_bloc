@@ -18,6 +18,21 @@ class MenuUtils {
     }
   }
 
+  bool isMenuAvailableById(int id) {
+    MobileLicenseMenuResponse? menuResponse = getMobileMenu();
+    if (menuResponse != null) {
+      List<Menu> menus = menuResponse.menus ?? [];
+      Menu? menu = menus.firstWhereOrNull((element) => element.id == id);
+      if (menu == null) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+  }
+
   bool isMessageMenu() {
     //return false;
     return isMenuAvailable("messagecenterpage");
@@ -67,7 +82,43 @@ class MenuUtils {
     return isMenuAvailable("busexceptionpage");
   }
 
-  bool isAssessmentMenu() {
-    return isMenuAvailable("assessmentmenupage");
+  bool isAssessmentOverviewMenu(bool? isParent) {
+    if (isParent == true) {
+      return isMenuAvailableById(1012);
+    } else {
+      return isMenuAvailableById(1011);
+    }
+  }
+
+  bool isAssessmentMenu(bool? isParent) {
+    if (isParent == true) {
+      return isMenuAvailableById(1003);
+    } else {
+      return isMenuAvailableById(1003);
+    }
+  }
+
+  bool isAssignmentMenu(bool? isParent) {
+    if (isParent == true) {
+      return isMenuAvailableById(1013);
+    } else {
+      return isMenuAvailableById(1012);
+    }
+  }
+
+  bool isLearningSubjectsMenu(bool? isParent) {
+    if (isParent == true) {
+      return isMenuAvailableById(1011);
+    } else {
+      return isMenuAvailableById(1010);
+    }
+  }
+
+  bool isLearningTeachersMenu(bool? isParent) {
+    if (isParent == true) {
+      return isMenuAvailableById(1010);
+    } else {
+      return isMenuAvailableById(1009);
+    }
   }
 }

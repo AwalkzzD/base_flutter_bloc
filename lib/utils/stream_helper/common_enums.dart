@@ -1,5 +1,8 @@
 import 'package:base_flutter_bloc/utils/enum_to_string/enum_to_string.dart';
 
+import '../common_utils/common_utils.dart';
+import '../widgets/terminologies_utils.dart';
+
 enum ScreenType { drawer, login, normal, splash, language }
 
 enum NotificationDeviceType { APNS, FCM }
@@ -7,6 +10,27 @@ enum NotificationDeviceType { APNS, FCM }
 enum MobilePlatform { Android, Ios }
 
 enum WalletCardType { Benefits }
+
+enum CardMobileDataPageProperties {
+  Name, // 0
+  Photo, // 1
+  InstituteName, // 2
+  EducationalPrograms, // 3
+  MobilePhone, // 4
+  HomePhone, // 5
+  Email, // 6
+  CustomColor, // 7
+  InstituteLogo, // 8
+  CustomText, // 9
+  CardCode, // 10
+  CardBenefitsCode, // 11
+  ExpirationDate, // 12
+  GlobalRegistrationNumber, // 13
+  Card, // 14
+  NameLabel, // 15
+  UserCode, // 16
+  PinCode // 17
+}
 
 enum ConsentViewType {
   All,
@@ -93,7 +117,8 @@ enum UploadEntityType {
   AdmissionData,
   Events,
   HomeworkAnswers,
-  AssignmentAnswers
+  AssignmentAnswers,
+  AssessmentAnswers
 }
 
 enum AttendanceStatus {
@@ -161,4 +186,19 @@ List<String> enumToList<T>(List<T> enumValues) {
   return enumValues.map((value) {
     return EnumToString.convertToString(value);
   }).toList();
+}
+
+String attendanceStatusString(String status) {
+  String convertedStatus = "";
+  if (status == EnumToString.convertToString(AttendanceStatus.Absence)) {
+    convertedStatus = string("attendance.absence_type_absence");
+  } else if (status ==
+      EnumToString.convertToString(AttendanceStatus.Presence)) {
+    convertedStatus = string("attendance.absence_type_presence");
+  } else if (status == EnumToString.convertToString(AttendanceStatus.Late)) {
+    convertedStatus = tardyLiteral();
+  } else {
+    convertedStatus = status;
+  }
+  return convertedStatus;
 }

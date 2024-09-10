@@ -154,9 +154,8 @@ class _AppDrawerWidgetState
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    /*Navigator.pop(globalContext);
-                                    Navigator.push(
-                                        globalContext, ProfileScreen.route());*/
+                                    widget.closeDrawerFunc();
+                                    router.pushNamed(AppRouter.profileRoute);
                                   },
                                   child: Container(
                                       padding: EdgeInsets.symmetric(
@@ -435,7 +434,7 @@ class _AppDrawerWidgetState
         Navigator.of(context).push(TimeTableScreen.route(true));*/
             })
           : const SizedBox(),
-      menuUtils.isAssessmentMenu()
+      menuUtils.isAssessmentOverviewMenu(getBloc.isUserParent)
           ? drawerTileWidget(
               string(
                   "assessment_and_assignment.title_assessments_and_assignments"),

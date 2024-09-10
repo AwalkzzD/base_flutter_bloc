@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:base_flutter_bloc/remote/repository/user/response/user_response.dart';
+import '../../user/response/user_response.dart';
 
 UserProfileResponse userProfileResponseFromJson(String str) =>
     UserProfileResponse.fromJson(json.decode(str));

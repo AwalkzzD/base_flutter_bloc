@@ -22,8 +22,8 @@ class ThemeState {
             colorScheme: const ColorScheme.dark(),
             buttonColor: Colors.blue,
             splashColor: Colors.black),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: Colors.white, circularTrackColor: Colors.white),
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(color: Color(0xFF7F1417)),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             backgroundColor: Color(0xFF1F1F1F)),
         appBarTheme: const AppBarTheme(
@@ -52,8 +52,8 @@ class ThemeState {
           cursorColor: Colors.black,
           selectionColor: Colors.black.withOpacity(0.4),
         ),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: primaryColor, circularTrackColor: primaryColor),
+        progressIndicatorTheme:
+            const ProgressIndicatorThemeData(color: Color(0xFF7F1417)),
         brightness: Brightness.light,
         buttonTheme: const ButtonThemeData(
             colorScheme: ColorScheme.light(),

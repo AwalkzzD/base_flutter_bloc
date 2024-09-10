@@ -1,3 +1,4 @@
+import 'package:base_flutter_bloc/base/routes/router/app_router.dart';
 import 'package:base_flutter_bloc/bloc/app_bloc/app_bloc.dart';
 import 'package:base_flutter_bloc/utils/appbar/icon_appbar.dart';
 import 'package:base_flutter_bloc/utils/common_utils/app_widgets.dart';
@@ -23,6 +24,8 @@ class BarcodeAppBarButton extends StatelessWidget {
             return IconAppBar(
               onClick: (context) {
                 if (onClick == null) {
+                  Navigator.of(globalContext, rootNavigator: true)
+                      .pushNamed(AppRouter.cardsRoute);
                 } else {
                   onClick?.call();
                 }

@@ -16,9 +16,12 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../remote/repository/consents/response/consents_student_response.dart';
 import '../../remote/repository/settings/response/app_settings_response.dart';
+import '../../remote/repository/user/response/student_of_relative_response.dart';
+import '../../remote/repository/user/response/user_response.dart';
 import '../../utils/auth/user_common_api.dart';
 import '../../utils/enum_to_string/enum_to_string.dart';
 import '../../utils/stream_helper/settings_utils.dart';
+import '../../utils/widgets/strings_utils.dart';
 
 class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
   @override
@@ -112,6 +115,7 @@ class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
       ];
 
   late BehaviorSubject<StudentForRelativeExtended?> selectedStudent;
+  get selectedStudentStream => selectedStudent.stream;
 
   HomeBloc() {
     selectedStudent = BehaviorSubject.seeded(getStudent());
@@ -271,5 +275,29 @@ class HomeBloc extends BaseBloc<HomeBlocEvent, BaseState> {
         }, (err) => onError(err));
       }, (err) => onError(err));
     }
+  }
+
+  List<StudentForRelativeExtended> studentsList() => getStudentList();
+
+  List<StudentForRelativeExtended> getStudentsListWithParent() {
+    List<StudentForRelativeExtended> students = [];
+    students.add(getParentAsStudent());
+    students.addAll(getStudentList());
+    return students;
+  }
+
+  StudentForRelativeExtended getParentAsStudent() {
+    RequestProperties? properties = getRequestProperties();
+    UserResponse? user = getUser();
+    StudentOfRelativeResponse studentOfRelativeResponse =
+        StudentOfRelativeResponse(
+            id: properties?.entityId,
+            surname: user?.surname,
+            givenName: user?.givenName,
+            fullname: getFullName(user?.givenName, user?.surname),
+            image: user?.image);
+    StudentForRelativeExtended studentForRelativeExtended =
+        StudentForRelativeExtended(studentOfRelativeResponse);
+    return studentForRelativeExtended;
   }
 }

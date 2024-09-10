@@ -22,31 +22,50 @@ String getLiteral(
 }
 
 String studentLiteral() => getLiteral(
-    TerminologyType.Student, false, string("common_labels.label_student"));
+    TerminologyType.Student, false, string("default_label.label_student"));
 
 String teacherLiteral() => getLiteral(
-    TerminologyType.Teacher, false, string("common_labels.label_teacher"));
+    TerminologyType.Teacher, false, string("default_label.label_teacher"));
 
 String teachersLiteral() => getLiteral(
-    TerminologyType.Teacher, true, string("common_labels.label_teachers"));
+    TerminologyType.Teacher, true, string("default_label.label_teachers"));
 
 String groupLiteral() => getLiteral(
-    TerminologyType.Group, false, string("common_labels.label_group"));
+    TerminologyType.Group, false, string("default_label.label_group"));
 
 String subjectLiteral() => getLiteral(
-    TerminologyType.Subject, false, string("common_labels.label_subject"));
+    TerminologyType.Subject, false, string("default_label.label_subject"));
 
 String subjectsLiteral() => getLiteral(
-    TerminologyType.Subject, true, string("common_labels.label_subjects"));
+    TerminologyType.Subject, true, string("default_label.label_subjects"));
 
 String gradeLiteral() => getLiteral(
-    TerminologyType.Grade, false, string("common_labels.label_grade"));
+    TerminologyType.Grade, false, string("default_label.label_grade"));
 
 String programLiteral() => getLiteral(
-    TerminologyType.Stream, false, string("common_labels.label_stream"));
+    TerminologyType.Stream, false, string("default_label.label_stream"));
+
+String locationLiteral() => getLiteral(
+    TerminologyType.Location, false, string("default_label.label_location"));
 
 String consentsLiteral() => getLiteral(
     TerminologyType.Consents, false, string("default_label.label_consents"));
 
-String locationLiteral() => getLiteral(
-    TerminologyType.Location, false, string("common_labels.label_location"));
+String tardyLiteral() => getLiteral(
+    TerminologyType.Tardy, false, string("default_label.label_tardy"));
+
+String authorizedAbsenceLiteral() => getLiteral(
+    TerminologyType.AuthorizedAbsence,
+    false,
+    string("default_label.label_authorized_absence"));
+
+String unAuthorizedAbsenceLiteral() => getLiteral(
+    TerminologyType.UnauthorizedAbsence,
+    false,
+    string("default_label.label_unauthorized_absence"));
+
+String contactDetailsLiteral() => getLiteral(TerminologyType.ContactData, false,
+    string("default_label.label_contact_data"));
+
+String financialDetailsLiteral() => getLiteral(TerminologyType.FinancialData,
+    false, string("default_label.label_financial_data"));
